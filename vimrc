@@ -9,28 +9,32 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
 Plugin 'VundleVim/Vundle.vim'
-Plugin 'kien/ctrlp.vim'
+" File Tree with <Leader>ft
 Plugin 'scrooloose/nerdtree'
+" File search with <C-p>
+Plugin 'kien/ctrlp.vim'
+" Better search highlighting
+Plugin 'haya14busa/incsearch.vim'
+" Status bar
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
+" Edit surrounding elements of text objects
 Plugin 'tpope/vim-surround'
+" Use . for plugin commands
 Plugin 'tpope/vim-repeat'
-Plugin 'Raimondi/delimitMate'
-Plugin 'pangloss/vim-javascript'
-Plugin 'haya14busa/incsearch.vim'
-Plugin 'guns/vim-clojure-static'
-Plugin 'tpope/vim-fireplace'
-Plugin 'kien/rainbow_parentheses.vim'
-Plugin 'godlygeek/tabular'
-Plugin 'plasticboy/vim-markdown'
+" Align elements by spacing
 Plugin 'junegunn/vim-easy-align'
-Plugin 'xolox/vim-easytags'
-Plugin 'xolox/vim-misc'
-Plugin 'leafgarland/typescript-vim'
-Plugin 'Valloric/YouCompleteMe'
+" Auto complete for delimitrs
+Plugin 'Raimondi/delimitMate'
+" Clojure pseudo-REPL
+Plugin 'tpope/vim-fireplace'
 
-" Extras
-Plugin 'johngrib/vim-game-code-break'
+" Filetype Highlighting
+Plugin 'leafgarland/typescript-vim'
+Plugin 'mxw/vim-jsx'
+Plugin 'pangloss/vim-javascript'
+Plugin 'guns/vim-clojure-static'
+Plugin 'toyamarinyon/vim-swift'
 
 " Vundle End 
 call vundle#end()
@@ -62,6 +66,8 @@ nnoremap j gj
 nnoremap k gk
 nnoremap B ^
 nnoremap E $
+nnoremap <leader>. :CtrlPTag<cr>
+set tags=./tags;/
 " }}}
 " Split windows {{{
 " Opening and closing splits
@@ -75,16 +81,21 @@ nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 " }}}
 " Miscellaneous {{{
+set clipboard=unnamed
 inoremap jk <esc>
 nnoremap <leader>s :mksession<CR>
+map q: <Nop>
+nnoremap Q <nop>
 " }}}
 " }}}
 " Indentation {{{
 set tabstop=4
 set softtabstop=4
+set shiftwidth=4
 set expandtab
 " }}}
 " Visual Highlighting {{{
+" Select recently pasted text
 nnoremap gV `[v`] 
 " }}}
 " Folding {{{
@@ -97,17 +108,23 @@ nnoremap <Space> za
 " Filetype Specific {{{
 autocmd FileType vim set foldlevel=0
 autocmd FileType vim set foldmethod=marker
+autocmd Filetype javascript setlocal ts=2 sw=2 sts=0
+autocmd Filetype typescript setlocal ts=2 sw=2 sts=0
 " }}}
 " Plugin Settings {{{
 " CtrlP {{{
 let g:ctrlp_working_path_mode = 'a'
 let g:ctrlp_custom_ignore = 'node_modules\|DS_Store|_build'
 " }}}
+" Search {{{
+map /  <Plug>(incsearch-forward)
+map ?  <Plug>(incsearch-backward)
+map g/ <Plug>(incsearch-stay)
+" }}}
 " Others {{{
 xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
 let g:airline_theme = 'powerlineish'
 noremap <leader>ft :NERDTreeToggle<CR>
-map <leader>rp :RainbowParenthesesToggleAll<CR>
 " }}}
 " }}}
