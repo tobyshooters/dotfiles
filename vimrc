@@ -20,6 +20,8 @@ Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 " Edit surrounding elements of text objects
 Plugin 'tpope/vim-surround'
+" Comment lines easily
+Plugin 'tpope/vim-commentary'
 " Use . for plugin commands
 Plugin 'tpope/vim-repeat'
 " Align elements by spacing
@@ -81,11 +83,15 @@ nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 " }}}
 " Miscellaneous {{{
-set clipboard=unnamed
 inoremap jk <esc>
+" Allows copying and pasting
+set clipboard=unnamed 
 nnoremap <leader>s :mksession<CR>
 map q: <Nop>
 nnoremap Q <nop>
+" Allows scrolling through autocomplete with j and k
+inoremap <expr> j ((pumvisible())?("\<C-n>"):("j"))
+inoremap <expr> k ((pumvisible())?("\<C-p>"):("k"))
 " }}}
 " }}}
 " Indentation {{{
