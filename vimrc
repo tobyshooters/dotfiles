@@ -85,7 +85,6 @@ nnoremap <C-H> <C-W><C-H>
 inoremap jk <esc>
 " Allows copying and pasting
 set clipboard=unnamed 
-nnoremap <leader>s :mksession<CR>
 map q: <Nop>
 nnoremap Q <nop>
 " Allows scrolling through autocomplete with j and k
@@ -98,10 +97,6 @@ set tabstop=4
 set softtabstop=4
 set shiftwidth=4
 set expandtab
-" }}}
-" Visual Highlighting {{{
-" Select recently pasted text
-nnoremap gV `[v`] 
 " }}}
 " Folding {{{
 set foldenable

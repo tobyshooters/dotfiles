@@ -13,5 +13,7 @@ Pre-installed `vundle` plugins
 - and others...
 
 To work, move the content of this file to a `.vim` file in root.
+
 Then add `source .vim/vimrc` to the root `.vimrc`.
+
 Finally, run `vim +PluginInstall +qall`
