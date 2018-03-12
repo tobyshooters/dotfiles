@@ -69,8 +69,6 @@ nnoremap j gj
 nnoremap k gk
 nnoremap B ^
 nnoremap E $
-nnoremap <leader>. :CtrlPTag<cr>
-set tags=./tags;/
 " }}}
 " Split windows {{{
 " Opening and closing splits
