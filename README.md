@@ -14,6 +14,10 @@ Pre-installed `vundle` plugins
 
 To work, move the content of this file to a `.vim` file in root.
 
-Then add `source .vim/vimrc` to the root `.vimrc`.
-
-Finally, run `vim +PluginInstall +qall`
+To setup in your own terminal:
+1. `git clone https://github.com/csciutto/vimrc.git`
+2. `mv vimrc .vim`
+3. `touch .vimrc`
+4. `echo "source .vim/vimrc" >> .vimrc`
+5. `git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim`
+6. `vim +PluginInstall +qall`
