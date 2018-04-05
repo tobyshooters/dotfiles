@@ -12,9 +12,7 @@ Pre-installed `vundle` plugins
 - EasyAlign
 - and others...
 
-To work, move the content of this file to a `.vim` file in root.
-
-To setup in your own terminal:
+To setup in your own terminal, run the following commands:
 1. `git clone https://github.com/csciutto/vimrc.git`
 2. `mv vimrc .vim`
 3. `touch .vimrc`
