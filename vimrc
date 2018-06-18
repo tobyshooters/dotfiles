@@ -30,6 +30,9 @@ Plugin 'junegunn/vim-easy-align'
 Plugin 'Raimondi/delimitMate'
 " Clojure pseudo-REPL
 Plugin 'tpope/vim-fireplace'
+" Ruby + Rails
+Plugin 'vim-ruby/vim-ruby'
+Plugin 'tpope/vim-rails'
 
 " Filetype Highlighting
 Plugin 'leafgarland/typescript-vim'
@@ -110,6 +113,7 @@ autocmd FileType vim set foldlevel=0
 autocmd FileType vim set foldmethod=marker
 autocmd Filetype javascript setlocal ts=2 sw=2 sts=0
 autocmd Filetype typescript setlocal ts=2 sw=2 sts=0
+autocmd Filetype ruby setlocal ts=2 sw=2 sts=0
 " }}}
 " Plugin Settings {{{
 " CtrlP {{{
