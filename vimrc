@@ -118,7 +118,7 @@ autocmd Filetype ruby setlocal ts=2 sw=2 sts=0
 " Plugin Settings {{{
 " CtrlP {{{
 let g:ctrlp_working_path_mode = 'a'
-let g:ctrlp_custom_ignore = 'node_modules\|DS_Store|_build'
+let g:ctrlp_custom_ignore = 'node_modules\|DS_Store|_build|public'
 " }}}
 " Search {{{
 map /  <Plug>(incsearch-forward)
