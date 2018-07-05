@@ -1,4 +1,4 @@
-" .vimrc
+" vimrc
 " Author: Cristobal Sciutto
 
 " Plugin Setup {{{
@@ -33,6 +33,8 @@ Plugin 'tpope/vim-fireplace'
 " Ruby + Rails
 Plugin 'vim-ruby/vim-ruby'
 Plugin 'tpope/vim-rails'
+" Ack
+Plugin 'mileszs/ack.vim'
 
 " Filetype Highlighting
 Plugin 'leafgarland/typescript-vim'
@@ -119,6 +121,10 @@ autocmd Filetype ruby setlocal ts=2 sw=2 sts=0
 " CtrlP {{{
 let g:ctrlp_working_path_mode = 'a'
 let g:ctrlp_custom_ignore = 'node_modules\|DS_Store|_build|public'
+" }}}
+" Ack {{{
+map <leader>a :LAck!<Space>
+
 " }}}
 " Search {{{
 map /  <Plug>(incsearch-forward)
