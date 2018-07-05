@@ -30,19 +30,14 @@ Plugin 'junegunn/vim-easy-align'
 Plugin 'Raimondi/delimitMate'
 " Clojure pseudo-REPL
 Plugin 'tpope/vim-fireplace'
-" Ruby + Rails
-Plugin 'vim-ruby/vim-ruby'
-Plugin 'tpope/vim-rails'
 " Ack
 Plugin 'mileszs/ack.vim'
 
 " Filetype Highlighting
-Plugin 'leafgarland/typescript-vim'
 Plugin 'mxw/vim-jsx'
 Plugin 'pangloss/vim-javascript'
 Plugin 'guns/vim-clojure-static'
-Plugin 'toyamarinyon/vim-swift'
-Plugin 'kchmck/vim-coffee-script'
+Plugin 'vim-ruby/vim-ruby'
 
 " Vundle End 
 call vundle#end()
