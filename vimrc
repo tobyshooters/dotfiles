@@ -111,6 +111,7 @@ autocmd FileType vim set foldmethod=marker
 autocmd Filetype javascript setlocal ts=2 sw=2 sts=0
 autocmd Filetype typescript setlocal ts=2 sw=2 sts=0
 autocmd Filetype ruby setlocal ts=2 sw=2 sts=0
+autocmd Filetype clojure setlocal sw=2 sts=2
 " }}}
 " Plugin Settings {{{
 " CtrlP {{{
