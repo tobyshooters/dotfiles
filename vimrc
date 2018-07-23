@@ -75,6 +75,7 @@ nnoremap E $
 nnoremap <leader>v <C-w>v<C-w>l
 nnoremap <leader>m <C-w>s<C-w>j
 nnoremap <leader>d <C-w>q
+nnoremap <leader>= <C-w>=
 " Moving through splits
 nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
