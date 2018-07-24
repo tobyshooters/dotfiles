@@ -14,5 +14,5 @@ Pre-installed `vundle` plugins
 - and others...
 
 To setup in your own terminal, run the following commands:
-1. `cd ~ && git clone https://github.com/csciutto/vimrc.git`
-2. `chmod +x vimrc/install.sh && ./install.sh`
+1. `cd ~ && git clone https://github.com/csciutto/vimrc.git .vim`
+2. `.vim/install`
