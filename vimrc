@@ -120,8 +120,12 @@ let g:ctrlp_working_path_mode = 'a'
 let g:ctrlp_custom_ignore = 'node_modules\|DS_Store|_build|public'
 " }}}
 " Ack {{{
+" To use Ack
 map <leader>a :LAck!<Space>
-
+" Visually selected ack
+vnoremap <leader>a y:Ack <C-r>=fnameescape(@")<CR><CR>
+" Find under cursor
+noremap <leader>f :LAck! <cword><CR>
 " }}}
 " Search {{{
 map /  <Plug>(incsearch-forward)
