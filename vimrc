@@ -43,9 +43,8 @@ Plugin 'vim-ruby/vim-ruby'
 call vundle#end()
 filetype plugin indent on
 " }}}
+"
 " Basic Settings {{{
-colorscheme molokai
-autocmd BufEnter * colorscheme molokai
 syntax enable
 let mapleader=","
 set backspace=indent,eol,start
@@ -63,7 +62,11 @@ set visualbell
 set laststatus=2
 set statusline=[%n]\ %<%.99f\ %h%w%m%r%y\ %{exists('*CapsLockStatusline')?CapsLockStatusline():''}%=%-16(\ %l,%c-%v\ %)%P
 " }}}
-" General Mapping {{{
+" Color Scheme {{{
+colorscheme molokai
+autocmd BufEnter * colorscheme molokai
+let g:airline_theme = 'powerlineish'
+" }}}
 " Movement {{{
 nnoremap j gj
 nnoremap k gk
@@ -82,17 +85,6 @@ nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 " }}}
-" Miscellaneous {{{
-inoremap jk <esc>
-" Allows copying and pasting
-set clipboard=unnamed 
-map q: <Nop>
-nnoremap Q <nop>
-" Allows scrolling through autocomplete with j and k
-inoremap <expr> j ((pumvisible())?("\<C-n>"):("j"))
-inoremap <expr> k ((pumvisible())?("\<C-p>"):("k"))
-" }}}
-" }}}
 " Indentation {{{
 set tabstop=4
 set softtabstop=4
@@ -106,13 +98,16 @@ set foldnestmax=10
 set foldmethod=indent
 nnoremap <Space> za
 " }}}
-" Filetype Specific {{{
-autocmd FileType vim set foldlevel=0
-autocmd FileType vim set foldmethod=marker
-autocmd Filetype javascript setlocal ts=2 sw=2 sts=0
-autocmd Filetype typescript setlocal ts=2 sw=2 sts=0
-autocmd Filetype ruby setlocal ts=2 sw=2 sts=0
-autocmd Filetype clojure setlocal sw=2 sts=2
+"
+" Miscellaneous {{{
+inoremap jk <esc>
+" Allows copying and pasting
+set clipboard=unnamed 
+map q: <Nop>
+nnoremap Q <nop>
+" Allows scrolling through autocomplete with j and k
+inoremap <expr> j ((pumvisible())?("\<C-n>"):("j"))
+inoremap <expr> k ((pumvisible())?("\<C-p>"):("k"))
 " }}}
 " Plugin Settings {{{
 " CtrlP {{{
@@ -135,7 +130,14 @@ map g/ <Plug>(incsearch-stay)
 " Others {{{
 xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
-let g:airline_theme = 'powerlineish'
 noremap <leader>ft :NERDTreeToggle<CR>
 " }}}
+" }}}
+" Filetype Specific {{{
+autocmd FileType vim set foldlevel=0
+autocmd FileType vim set foldmethod=marker
+autocmd Filetype javascript setlocal ts=2 sw=2 sts=0
+autocmd Filetype typescript setlocal ts=2 sw=2 sts=0
+autocmd Filetype ruby setlocal ts=2 sw=2 sts=0
+autocmd Filetype clojure setlocal sw=2 sts=2
 " }}}
