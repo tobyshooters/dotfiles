@@ -38,6 +38,7 @@ Plugin 'pangloss/vim-javascript'
 Plugin 'guns/vim-clojure-static'
 Plugin 'toyamarinyon/vim-swift'
 Plugin 'kchmck/vim-coffee-script'
+Plugin 'elixir-editors/vim-elixir'
 
 " Vundle End 
 call vundle#end()
