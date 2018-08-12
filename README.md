@@ -1,6 +1,7 @@
 csciutto's vimfiles
 
 These are my custom vim files with my basic settings and plugins
+
 Stored on Git for easy initialization on new machines
 
 Pre-installed `vundle` plugins
@@ -12,8 +13,6 @@ Pre-installed `vundle` plugins
 - EasyAlign
 - and others...
 
-To work, move the content of this file to a `.vim` file in root.
-
-Then add `source .vim/vimrc` to the root `.vimrc`.
-
-Finally, run `vim +PluginInstall +qall`
+To setup in your own terminal, run the following commands:
+1. `cd ~ && git clone https://github.com/csciutto/vimrc.git .vim`
+2. `.vim/install`
