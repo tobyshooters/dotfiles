@@ -65,9 +65,10 @@ set laststatus=2
 set statusline=[%n]\ %<%.99f\ %h%w%m%r%y\ %{exists('*CapsLockStatusline')?CapsLockStatusline():''}%=%-16(\ %l,%c-%v\ %)%P
 " }}}
 " Color Scheme {{{
-colorscheme molokai
-autocmd BufEnter * colorscheme molokai
-let g:airline_theme = 'powerlineish'
+" colorscheme molokai
+" autocmd BufEnter * colorscheme molokai
+" let g:airline_theme = 'powerlineish'
+let g:airline_theme = 'solarized'
 " }}}
 " Movement {{{
 nnoremap j gj
