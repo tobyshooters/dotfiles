@@ -3,7 +3,7 @@
 # Vim installs
 cd ~
 touch .vimrc
-echo "source ~/.vim/vimrc" >> .vimrc
+echo "source ~/.vim/.vimrc" >> .vimrc
 open ~/.vim/Monaco-Powerline.otf
 git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 vim +PluginInstall +qall
