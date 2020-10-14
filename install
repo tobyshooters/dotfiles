@@ -12,5 +12,6 @@ vim +PluginInstall +qall
 sudo apt install zsh
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 
-# Tmux
-mv .vim/tmux.conf .tmux.conf
+# Dot Files
+mv .vim/.tmux.conf .tmux.conf && source .tmux.conf
+mv .vim/.zshrc .zshrc && source .zshrc
