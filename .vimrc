@@ -28,18 +28,12 @@ Plugin 'tpope/vim-repeat'
 Plugin 'junegunn/vim-easy-align'
 " Auto complete for delimitrs
 Plugin 'Raimondi/delimitMate'
-" Clojure pseudo-REPL
-Plugin 'tpope/vim-fireplace'
 " Ack
 Plugin 'mileszs/ack.vim'
 
 " Filetype Highlighting
-Plugin 'mxw/vim-jsx'
 Plugin 'pangloss/vim-javascript'
-Plugin 'guns/vim-clojure-static'
-Plugin 'kchmck/vim-coffee-script'
-Plugin 'elixir-editors/vim-elixir'
-Plugin 'vim-ruby/vim-ruby'
+Plugin 'maxmellon/vim-jsx-pretty'
 
 " Vundle End 
 call vundle#end()
@@ -49,6 +43,7 @@ filetype plugin indent on
 " Basic Settings {{{
 syntax enable
 let mapleader=","
+set nocompatible
 set backspace=indent,eol,start
 set mouse=a
 set ignorecase
@@ -62,7 +57,7 @@ set showmatch
 set title
 set visualbell
 set laststatus=2
-set statusline=[%n]\ %<%.99f\ %h%w%m%r%y\ %{exists('*CapsLockStatusline')?CapsLockStatusline():''}%=%-16(\ %l,%c-%v\ %)%P
+set statusline=[%n]\ %<%.99f\ %h%w%m%r%y\ %=%-16(\ %l,%c-%v\ %)%P
 " }}}
 " Color Scheme {{{
 " colorscheme molokai
@@ -98,19 +93,36 @@ set expandtab
 set foldenable
 set foldlevelstart=10
 set foldnestmax=10
-set foldmethod=indent
+set foldmethod=syntax
 nnoremap <Space> za
 " }}}
 "
 " Miscellaneous {{{
-inoremap jk <esc>
+"
 " Allows copying and pasting
 set clipboard=unnamed 
 map q: <Nop>
 nnoremap Q <nop>
+
 " Allows scrolling through autocomplete with j and k
 inoremap <expr> j ((pumvisible())?("\<C-n>"):("j"))
 inoremap <expr> k ((pumvisible())?("\<C-p>"):("k"))
+
+" Set the title of the Terminal to the currently open file
+function! SetTerminalTitle()
+    let titleString = expand('%:t')
+    if len(titleString) > 0
+        let &titlestring = expand('%:t')
+        " this is the format iTerm2 expects when setting the window title
+        let args = "\033];".&titlestring."\007"
+        let cmd = 'silent !echo -e "'.args.'"'
+        execute cmd
+        redraw!
+    endif
+endfunction
+
+autocmd BufEnter * call SetTerminalTitle()
+
 " }}}
 " Plugin Settings {{{
 " CtrlP {{{
@@ -143,4 +155,8 @@ autocmd Filetype javascript setlocal ts=2 sw=2 sts=0
 autocmd Filetype typescript setlocal ts=2 sw=2 sts=0
 autocmd Filetype ruby setlocal ts=2 sw=2 sts=0
 autocmd Filetype clojure setlocal sw=2 sts=2
+autocmd Filetype text set textwidth=79
+autocmd Filetype text setlocal spell
+autocmd Filetype markdown set textwidth=79
+autocmd Filetype markdown setlocal spell
 " }}}
