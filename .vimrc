@@ -90,7 +90,8 @@ set expandtab
 set foldenable
 set foldlevelstart=10
 set foldnestmax=10
-set foldmethod=syntax
+set foldmethod=manual
+vnoremap <Space> zf
 nnoremap <Space> za
 " }}}
 "
