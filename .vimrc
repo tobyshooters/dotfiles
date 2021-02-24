@@ -55,7 +55,6 @@ set wildmenu
 set lazyredraw
 set showmatch
 set title
-set visualbell
 set noruler
 set laststatus=2
 
