@@ -60,9 +60,10 @@ set noruler
 set laststatus=2
 
 " }}}
-" Airline Status Bar {{{
+" Color {{{
 
 let g:airline_theme = 'monochrome'
+highlight LineNr ctermfg=grey
 
 " }}}
 " Movement {{{
