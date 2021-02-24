@@ -162,12 +162,15 @@ noremap <leader>ft :NERDTreeToggle<CR>
 " Filetype Specific {{{
 autocmd FileType vim set foldlevel=0
 autocmd FileType vim set foldmethod=marker
+
 autocmd Filetype javascript setlocal ts=2 sw=2 sts=0
-autocmd Filetype typescript setlocal ts=2 sw=2 sts=0
-autocmd Filetype ruby setlocal ts=2 sw=2 sts=0
-autocmd Filetype clojure setlocal sw=2 sts=2
+au BufRead,BufNewFile *.ts set filetype=javascript
+au BufRead,BufNewFile *.tsx set filetype=javascript
+au BufRead,BufNewFile *.jsx set filetype=javascript
+
 autocmd Filetype text set textwidth=79
 autocmd Filetype text setlocal spell
+
 autocmd Filetype markdown set textwidth=79
 autocmd Filetype markdown setlocal spell
 " }}}
