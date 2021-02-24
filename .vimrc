@@ -55,13 +55,13 @@ set wildmenu
 set lazyredraw
 set showmatch
 set title
-set noruler
+set ruler
 set laststatus=2
 
 " }}}
 " Color {{{
 
-let g:airline_theme = 'monochrome'
+let g:airline_theme = 'silver'
 highlight LineNr ctermfg=grey
 
 " }}}
