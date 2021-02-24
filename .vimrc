@@ -10,31 +10,30 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
 Plugin 'VundleVim/Vundle.vim'
+
 " File Tree with <Leader>ft
 Plugin 'scrooloose/nerdtree'
 " File search with <C-p>
 Plugin 'kien/ctrlp.vim'
+" Line search with Ack
+Plugin 'mileszs/ack.vim'
+
 " Better search highlighting
 Plugin 'haya14busa/incsearch.vim'
-" Status bar
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
 " Edit surrounding elements of text objects
 Plugin 'tpope/vim-surround'
 " Comment lines easily
 Plugin 'tpope/vim-commentary'
-" Use . for plugin commands
-Plugin 'tpope/vim-repeat'
 " Align elements by spacing
 Plugin 'junegunn/vim-easy-align'
 " Auto complete for delimitrs
 Plugin 'Raimondi/delimitMate'
-" Ack
-Plugin 'mileszs/ack.vim'
 
-" Filetype Highlighting
-Plugin 'pangloss/vim-javascript'
-Plugin 'maxmellon/vim-jsx-pretty'
+" Use . for plugin commands
+Plugin 'tpope/vim-repeat'
+" Status bar
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
 
 " Vundle End 
 call vundle#end()
@@ -51,18 +50,17 @@ set mouse=a
 set ignorecase
 set smartcase
 set number
-set noruler
 set showcmd
 set wildmenu
 set lazyredraw
 set showmatch
 set title
 set visualbell
+set noruler
 set laststatus=2
-set statusline=[%n]\ %<%.99f\ %h%w%m%r%y\ %=%-16(\ %l,%c-%v\ %)%P
 
 " }}}
-" Color Scheme {{{
+" Airline Status Bar {{{
 
 let g:airline_theme = 'monochrome'
 
