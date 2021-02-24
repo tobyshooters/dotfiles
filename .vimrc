@@ -2,6 +2,7 @@
 " Author: Cristobal Sciutto
 
 " Plugin Setup {{{
+
 " Vundle Setup
 set nocompatible
 filetype off
@@ -38,9 +39,10 @@ Plugin 'maxmellon/vim-jsx-pretty'
 " Vundle End 
 call vundle#end()
 filetype plugin indent on
+
 " }}}
-"
 " Basic Settings {{{
+
 syntax enable
 let mapleader=","
 set nocompatible
@@ -49,7 +51,7 @@ set mouse=a
 set ignorecase
 set smartcase
 set number
-set ruler
+set noruler
 set showcmd
 set wildmenu
 set lazyredraw
@@ -58,17 +60,27 @@ set title
 set visualbell
 set laststatus=2
 set statusline=[%n]\ %<%.99f\ %h%w%m%r%y\ %=%-16(\ %l,%c-%v\ %)%P
+
 " }}}
 " Color Scheme {{{
-let g:airline_theme = 'solarized'
+
+let g:airline_theme = 'monochrome'
+
 " }}}
 " Movement {{{
+
 nnoremap j gj
 nnoremap k gk
 nnoremap B ^
 nnoremap E $
+
+" Allows scrolling through autocomplete with j and k
+inoremap <expr> j ((pumvisible())?("\<C-n>"):("j"))
+inoremap <expr> k ((pumvisible())?("\<C-p>"):("k"))
+
 " }}}
 " Split windows {{{
+
 " Opening and closing splits
 nnoremap <leader>v <C-w>v<C-w>l
 nnoremap <leader>m <C-w>s<C-w>j
@@ -79,32 +91,35 @@ nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
+
 " }}}
 " Indentation {{{
+
 set tabstop=4
 set softtabstop=4
 set shiftwidth=4
 set expandtab
+
 " }}}
 " Folding {{{
+
 set foldenable
 set foldlevelstart=10
 set foldnestmax=10
 set foldmethod=manual
 vnoremap <Space> zf
 nnoremap <Space> za
+
 " }}}
-"
-" Miscellaneous {{{
-"
-" Allows copying and pasting
+" Copy and Past {{{
+
+set pastetoggle=<leader>p 
 set clipboard=unnamed 
 map q: <Nop>
 nnoremap Q <nop>
 
-" Allows scrolling through autocomplete with j and k
-inoremap <expr> j ((pumvisible())?("\<C-n>"):("j"))
-inoremap <expr> k ((pumvisible())?("\<C-p>"):("k"))
+" }}}
+" Miscellaneous {{{
 
 " Set the title of the Terminal to the currently open file
 function! SetTerminalTitle()
