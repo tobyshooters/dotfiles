@@ -63,6 +63,7 @@ set laststatus=2
 
 let g:airline_theme = 'silver'
 highlight LineNr ctermfg=grey
+highlight VertSplit ctermfg=grey
 
 " }}}
 " Movement {{{
