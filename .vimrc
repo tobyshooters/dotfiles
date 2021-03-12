@@ -1,45 +1,6 @@
 " vimrc
 " Author: Cristobal Sciutto
 
-" Plugin Setup {{{
-
-" Vundle Setup
-set nocompatible
-filetype off
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-
-Plugin 'VundleVim/Vundle.vim'
-
-" File Tree with <Leader>ft
-Plugin 'scrooloose/nerdtree'
-" File search with <C-p>
-Plugin 'kien/ctrlp.vim'
-" Line search with Ack
-Plugin 'mileszs/ack.vim'
-
-" Better search highlighting
-Plugin 'haya14busa/incsearch.vim'
-" Edit surrounding elements of text objects
-Plugin 'tpope/vim-surround'
-" Comment lines easily
-Plugin 'tpope/vim-commentary'
-" Align elements by spacing
-Plugin 'junegunn/vim-easy-align'
-" Auto complete for delimitrs
-Plugin 'Raimondi/delimitMate'
-
-" Use . for plugin commands
-Plugin 'tpope/vim-repeat'
-" Status bar
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
-
-" Vundle End 
-call vundle#end()
-filetype plugin indent on
-
-" }}}
 " Basic Settings {{{
 
 syntax enable
@@ -85,6 +46,7 @@ nnoremap <leader>v <C-w>v<C-w>l
 nnoremap <leader>m <C-w>s<C-w>j
 nnoremap <leader>d <C-w>q
 nnoremap <leader>= <C-w>=
+
 " Moving through splits
 nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
@@ -110,7 +72,7 @@ vnoremap <Space> zf
 nnoremap <Space> za
 
 " }}}
-" Copy and Past {{{
+" Copy and Paste {{{
 
 set pastetoggle=<leader>p 
 set clipboard=unnamed 
@@ -136,30 +98,6 @@ endfunction
 autocmd BufEnter * call SetTerminalTitle()
 
 " }}}
-" Plugin Settings {{{
-" CtrlP {{{
-let g:ctrlp_working_path_mode = 'a'
-let g:ctrlp_custom_ignore = 'node_modules\|DS_Store|_build|public'
-" }}}
-" Ack {{{
-" To use Ack
-map <leader>a :LAck!<Space>
-" Visually selected ack
-vnoremap <leader>a y:Ack <C-r>=fnameescape(@")<CR><CR>
-" Find under cursor
-noremap <leader>f :LAck! <cword><CR>
-" }}}
-" Search {{{
-map /  <Plug>(incsearch-forward)
-map ?  <Plug>(incsearch-backward)
-map g/ <Plug>(incsearch-stay)
-" }}}
-" Others {{{
-xmap ga <Plug>(EasyAlign)
-nmap ga <Plug>(EasyAlign)
-noremap <leader>ft :NERDTreeToggle<CR>
-" }}}
-" }}}
 " Filetype Specific {{{
 autocmd FileType vim set foldlevel=0
 autocmd FileType vim set foldmethod=marker
@@ -174,4 +112,73 @@ autocmd Filetype text setlocal spell
 
 autocmd Filetype markdown set textwidth=79
 autocmd Filetype markdown setlocal spell
+" }}}
+
+" Plugin Setup {{{
+
+" Vundle Setup
+set nocompatible
+filetype off
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+Plugin 'VundleVim/Vundle.vim'
+
+" File Tree with <Leader>ft
+Plugin 'scrooloose/nerdtree'
+" Tag Bar
+Plugin 'preservim/tagbar'
+" File search with <C-p>
+Plugin 'kien/ctrlp.vim'
+" Line search with Ack
+Plugin 'mileszs/ack.vim'
+
+" Better search highlighting
+Plugin 'haya14busa/incsearch.vim'
+" Edit surrounding elements of text objects
+Plugin 'tpope/vim-surround'
+" Comment lines easily
+Plugin 'tpope/vim-commentary'
+" Align elements by spacing
+Plugin 'junegunn/vim-easy-align'
+" Auto complete for delimitrs
+Plugin 'Raimondi/delimitMate'
+
+" Use . for plugin commands
+Plugin 'tpope/vim-repeat'
+" Status bar
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
+
+" Vundle End 
+call vundle#end()
+filetype plugin indent on
+
+" }}}
+" Plugin Settings {{{
+
+" Ctrl-P
+let g:ctrlp_working_path_mode = 'a'
+let g:ctrlp_custom_ignore = 'node_modules\|DS_Store|_build|public'
+
+" To use Ack
+map <leader>a :LAck!<Space>
+" Visually selected ack
+vnoremap <leader>a y:Ack <C-r>=fnameescape(@")<CR><CR>
+" Find under cursor
+noremap <leader>f :LAck! <cword><CR>
+
+" Search
+map /  <Plug>(incsearch-forward)
+map ?  <Plug>(incsearch-backward)
+map g/ <Plug>(incsearch-stay)
+
+" Align tabular
+xmap ga <Plug>(EasyAlign)
+nmap ga <Plug>(EasyAlign)
+
+" File management
+noremap <leader>ft :NERDTreeToggle<CR>
+noremap <leader>t :TagbarToggle<CR>
+
 " }}}
