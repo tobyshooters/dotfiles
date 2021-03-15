@@ -19,12 +19,19 @@ set title
 set ruler
 set laststatus=2
 
+
 " }}}
 " Color {{{
 
 let g:airline_theme = 'silver'
 highlight LineNr ctermfg=grey
 highlight VertSplit ctermfg=grey
+highlight NonText ctermfg=grey
+
+" }}}
+" Type {{{
+
+set showbreak=↪\
 
 " }}}
 " Movement {{{
@@ -150,6 +157,8 @@ Plugin 'tpope/vim-repeat'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 
+Plugin 'junegunn/goyo.vim'
+
 " Vundle End 
 call vundle#end()
 filetype plugin indent on
@@ -180,5 +189,9 @@ nmap ga <Plug>(EasyAlign)
 " File management
 noremap <leader>ft :NERDTreeToggle<CR>
 noremap <leader>t :TagbarToggle<CR>
+
+" Go Yo
+noremap <leader>g :Goyo <bar> highlight StatusLineNC ctermfg=grey <CR>
+let g:goyo_height='80%'
 
 " }}}
