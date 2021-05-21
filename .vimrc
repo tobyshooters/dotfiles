@@ -18,7 +18,7 @@ set showmatch
 set title
 set ruler
 set laststatus=2
-
+set conceallevel=2
 
 " }}}
 " Color {{{
@@ -157,7 +157,13 @@ Plugin 'tpope/vim-repeat'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 
+" Minimalist writing mode
 Plugin 'junegunn/goyo.vim'
+
+" Note-taking
+Plugin 'vimwiki/vimwiki'
+Plugin 'godlygeek/tabular'
+Plugin 'plasticboy/vim-markdown'
 
 " Vundle End 
 call vundle#end()
@@ -193,5 +199,8 @@ noremap <leader>t :TagbarToggle<CR>
 " Go Yo
 noremap <leader>g :Goyo <bar> highlight StatusLineNC ctermfg=grey <CR>
 let g:goyo_height='80%'
+
+" Vim Wiki
+let g:vimwiki_list = [{'path': '~/Desktop/ideaspace/notes', 'syntax': 'markdown', 'ext': '.md'}]
 
 " }}}
