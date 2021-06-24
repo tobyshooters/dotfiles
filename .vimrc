@@ -27,6 +27,7 @@ let g:airline_theme = 'silver'
 highlight LineNr ctermfg=grey
 highlight VertSplit ctermfg=grey
 highlight NonText ctermfg=grey
+highlight Folded ctermbg=255
 
 " }}}
 " Type {{{
@@ -72,9 +73,8 @@ set expandtab
 " Folding {{{
 
 set foldenable
-set foldlevelstart=10
-set foldnestmax=10
-set foldmethod=manual
+set foldnestmax=1
+set foldmethod=indent
 vnoremap <Space> zf
 nnoremap <Space> za
 
