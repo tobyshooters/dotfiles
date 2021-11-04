@@ -3,8 +3,8 @@
 # Vim installs
 cd ~
 touch .vimrc
-echo "source ~/.vim/.vimrc" >> .vimrc
-open ~/.vim/Monaco-Powerline.otf
+echo "source ~/dotfiles/.vimrc" >> .vimrc
+open ~/dotfiles/Monaco-Powerline.otf
 git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 vim +PluginInstall +qall
 
@@ -12,6 +12,13 @@ vim +PluginInstall +qall
 sudo apt install zsh
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 
-# Dot Files
-mv .vim/.tmux.conf .tmux.conf && source .tmux.conf
-mv .vim/.zshrc .zshrc && source .zshrc
+# Dot files
+mkdir .i3
+touch .i3/config
+echo "source ~/dotfiles/.i3/config" >> .i3/config
+
+touch .tmux.conf
+echo "source ~/dotfiles/.tmux.conf" >> .tmux.conf
+
+touch .zshrc
+echo "source ~/dotfiles/.zshrc" >> .zshrc
