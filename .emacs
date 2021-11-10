@@ -1,13 +1,22 @@
-; Set up package.el to work with MELPA
+;; Set up package.el to work with MELPA
 (require 'package)
-(require 'use-package)
-
 (package-initialize)
 (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/"))
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+(require 'use-package)
+
+;; Org-mode
+(use-package org
+ :ensure t)
+
 ;; Vim key-bindings
-(use-package evil :ensure t :config
+(use-package evil
+ :ensure t
+ :config
  (evil-mode 1))
 
 (setq evil-normal-state-tag "NORMAL")
@@ -35,6 +44,7 @@
 (define-key evil-normal-state-map
   (kbd "C-l") 'windmove-right)
 
+<<<<<<< HEAD
 ;; Commenting
 (define-key evil-visual-state-map
   (kbd ",cc") 'comment-region)
@@ -67,12 +77,18 @@
 (add-hook 'text-mode-hook '(lambda ()
                              (auto-fill-mode 1)))
 
+=======
+>>>>>>> 920bcf2a29639020319a13cbc82870ee1b6cd299
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+<<<<<<< HEAD
  '(package-selected-packages '(olivetti use-package evil)))
+=======
+ '(package-selected-packages (quote (evil use-package))))
+>>>>>>> 920bcf2a29639020319a13cbc82870ee1b6cd299
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
