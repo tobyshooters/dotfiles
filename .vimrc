@@ -28,6 +28,7 @@ highlight LineNr ctermfg=grey
 highlight VertSplit ctermfg=grey
 highlight NonText ctermfg=grey
 highlight Folded ctermbg=255
+highlight Visual cterm=None ctermbg=LightYellow
 
 " }}}
 " Type {{{
@@ -73,7 +74,7 @@ set expandtab
 " Folding {{{
 
 set foldenable
-set foldnestmax=1
+set foldnestmax=2
 set foldmethod=indent
 vnoremap <Space> zf
 nnoremap <Space> za
