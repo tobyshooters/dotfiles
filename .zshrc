@@ -15,4 +15,5 @@ export EDITOR="$VISUAL"
 source $ZSH/oh-my-zsh.sh
 
 alias ls="tree -L 1"
+alias emacs="emacs -nw"
 alias textedit="open -a TextEdit"
