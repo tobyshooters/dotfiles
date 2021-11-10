@@ -127,7 +127,7 @@ autocmd Filetype markdown setlocal spell
 " Vundle Setup
 set nocompatible
 filetype off
-set rtp+=~/.vim/bundle/Vundle.vim
+set rtp+=~/dotfiles/bundle/Vundle.vim
 call vundle#begin()
 
 Plugin 'VundleVim/Vundle.vim'
