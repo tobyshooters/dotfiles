@@ -1,10 +1,13 @@
-; Set up package.el to work with MELPA
+;; Set up package.el to work with MELPA
 (require 'package)
-(require 'use-package)
-
 (package-initialize)
 (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/"))
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+(require 'use-package)
 
 (use-package org
  :ensure t)
