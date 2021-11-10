@@ -44,7 +44,6 @@
 (define-key evil-normal-state-map
   (kbd "C-l") 'windmove-right)
 
-<<<<<<< HEAD
 ;; Commenting
 (define-key evil-visual-state-map
   (kbd ",cc") 'comment-region)
@@ -76,19 +75,12 @@
 (setq-default fill-column 79)
 (add-hook 'text-mode-hook '(lambda ()
                              (auto-fill-mode 1)))
-
-=======
->>>>>>> 920bcf2a29639020319a13cbc82870ee1b6cd299
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
-<<<<<<< HEAD
- '(package-selected-packages '(olivetti use-package evil)))
-=======
- '(package-selected-packages (quote (evil use-package))))
->>>>>>> 920bcf2a29639020319a13cbc82870ee1b6cd299
+ '(package-selected-packages (quote (olivetti use-package evil))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
