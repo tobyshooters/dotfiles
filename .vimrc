@@ -151,7 +151,6 @@ Plugin 'tpope/vim-commentary'
 Plugin 'junegunn/vim-easy-align'
 " Auto complete for delimitrs
 Plugin 'Raimondi/delimitMate'
-
 " Use . for plugin commands
 Plugin 'tpope/vim-repeat'
 " Status bar
@@ -165,6 +164,10 @@ Plugin 'junegunn/goyo.vim'
 Plugin 'vimwiki/vimwiki'
 Plugin 'godlygeek/tabular'
 Plugin 'plasticboy/vim-markdown'
+Plugin 'gpanders/vim-medieval'
+
+" Syntax
+Plugin 'othree/html5.vim'
 
 " Vundle End 
 call vundle#end()
@@ -202,6 +205,14 @@ noremap <leader>g :Goyo <bar> highlight StatusLineNC ctermfg=grey <CR>
 let g:goyo_height='80%'
 
 " Vim Wiki
-let g:vimwiki_list = [{'path': '~/Desktop/ideaspace/notes', 'syntax': 'markdown', 'ext': '.md'}]
+let g:vimwiki_list = [{
+            \ 'path': '~/Desktop/ideaspace/notes', 
+            \ 'syntax': 'markdown', 
+            \ 'ext': '.md', 
+            \ 'auto_diary_index': 1
+            \ }]
 
+" Vim Medieval
+let g:medieval_langs = ['python=python3', 'sh', 'console=bash']
+nnoremap <leader>E :<C-U>EvalBlock<CR>
 " }}}
