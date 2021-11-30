@@ -24,11 +24,16 @@ set conceallevel=2
 " Color {{{
 
 let g:airline_theme = 'silver'
-highlight LineNr ctermfg=grey
-highlight VertSplit ctermfg=grey
-highlight NonText ctermfg=grey
-highlight Folded ctermbg=255
-highlight Visual cterm=None ctermbg=LightYellow
+
+function! PatchColors()
+    highlight LineNr ctermfg=grey
+    highlight VertSplit ctermfg=grey
+    highlight NonText ctermfg=grey
+    highlight Folded ctermbg=255
+    highlight Visual cterm=None ctermbg=LightYellow
+endfunction
+
+autocmd BufEnter * call PatchColors()
 
 " }}}
 " Type {{{
