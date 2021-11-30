@@ -134,37 +134,31 @@ Plugin 'VundleVim/Vundle.vim'
 
 " File Tree with <Leader>ft
 Plugin 'scrooloose/nerdtree'
-" Tag Bar
-Plugin 'preservim/tagbar'
 " File search with <C-p>
 Plugin 'kien/ctrlp.vim'
 " Line search with Ack
 Plugin 'mileszs/ack.vim'
-
 " Better search highlighting
 Plugin 'haya14busa/incsearch.vim'
 " Edit surrounding elements of text objects
 Plugin 'tpope/vim-surround'
 " Comment lines easily
 Plugin 'tpope/vim-commentary'
+" Use . for plugin commands
+Plugin 'tpope/vim-repeat'
 " Align elements by spacing
 Plugin 'junegunn/vim-easy-align'
 " Auto complete for delimitrs
 Plugin 'Raimondi/delimitMate'
-" Use . for plugin commands
-Plugin 'tpope/vim-repeat'
 " Status bar
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 
-" Minimalist writing mode
-Plugin 'junegunn/goyo.vim'
-
 " Note-taking
 Plugin 'vimwiki/vimwiki'
-Plugin 'godlygeek/tabular'
 Plugin 'plasticboy/vim-markdown'
-Plugin 'gpanders/vim-medieval'
+Plugin 'junegunn/goyo.vim'
+Plugin 'junegunn/limelight.vim'
 
 " Syntax
 Plugin 'othree/html5.vim'
@@ -198,11 +192,13 @@ nmap ga <Plug>(EasyAlign)
 
 " File management
 noremap <leader>ft :NERDTreeToggle<CR>
-noremap <leader>t :TagbarToggle<CR>
 
-" Go Yo
+" Go Yo and Lime Light
 noremap <leader>g :Goyo <bar> highlight StatusLineNC ctermfg=grey <CR>
 let g:goyo_height='80%'
+autocmd! User GoyoEnter Limelight  | set scrolloff=999
+autocmd! User GoyoLeave Limelight! | set scrolloff=0
+let g:limelight_conceal_ctermfg = 'gray'
 
 " Vim Wiki
 let g:vimwiki_list = [{
