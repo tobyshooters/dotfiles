@@ -1,0 +1,1 @@
+* * * * * root [ "$(cat /sys/class/power_supply/BAT0/status)" = Discharging -a "$(cat /sys/class/power_supply/BAT0/capacity)" -lt 10 ] && systemctl suspend
