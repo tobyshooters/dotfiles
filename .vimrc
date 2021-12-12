@@ -23,17 +23,37 @@ set conceallevel=2
 " }}}
 " Color {{{
 
-let g:airline_theme = 'silver'
-
 function! PatchColors()
     highlight LineNr ctermfg=grey
-    highlight VertSplit ctermfg=grey
-    highlight NonText ctermfg=grey
+    highlight VertSplit ctermfg=250
     highlight Folded ctermbg=255
+    highlight NonText ctermfg=grey
     highlight Visual cterm=None ctermbg=LightYellow
+    highlight StatusLine ctermfg=250 ctermbg=255
+    highlight StatusLineNC ctermfg=250 ctermbg=255
 endfunction
 
 autocmd BufEnter * call PatchColors()
+
+" }}}
+" Status Bar {{{
+let g:currentmode={
+   \ 'n':      'NORMAL',
+   \ 'v':      'VISUAL',
+   \ 'V':      'V·LINE',
+   \ "\<C-V>": 'V·BLOCK',
+   \ 'i':      'INSERT',
+   \ 'R':      'R',
+   \ 'Rv':     'V·REPLACE',
+   \ 'c':      'COMMAND',
+\}
+set statusline=
+set statusline+=\ %-7(%{g:currentmode[mode()]}%)
+set statusline+=\ %F
+
+set statusline+=%=
+set statusline+=\ %5(%lL%)
+set statusline+=\ %5(%{wordcount().words}\ words%)
 
 " }}}
 " Type {{{
@@ -155,9 +175,6 @@ Plugin 'tpope/vim-repeat'
 Plugin 'junegunn/vim-easy-align'
 " Auto complete for delimitrs
 Plugin 'Raimondi/delimitMate'
-" Status bar
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
 
 " Note-taking
 Plugin 'vimwiki/vimwiki'
@@ -207,7 +224,7 @@ let g:limelight_conceal_ctermfg = 'gray'
 
 " Vim Wiki
 let g:vimwiki_list = [{
-            \ 'path': '~/Desktop/ideaspace/notes', 
+            \ 'path': '~/ideaspace/notes', 
             \ 'syntax': 'markdown', 
             \ 'ext': '.md', 
             \ 'auto_diary_index': 1
