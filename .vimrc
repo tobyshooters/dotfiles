@@ -1,4 +1,4 @@
-" vimrc
+" vimrc 
 " Author: Cristobal Sciutto
 
 " Basic Settings {{{
@@ -29,8 +29,8 @@ function! PatchColors()
     highlight Folded ctermbg=255
     highlight NonText ctermfg=grey
     highlight Visual cterm=None ctermbg=LightYellow
-    highlight StatusLine ctermfg=250 ctermbg=255
-    highlight StatusLineNC ctermfg=250 ctermbg=255
+    highlight StatusLine cterm=None ctermfg=235 ctermbg=252
+    highlight StatusLineNC cterm=None ctermfg=254 ctermbg=252
 endfunction
 
 autocmd BufEnter * call PatchColors()
