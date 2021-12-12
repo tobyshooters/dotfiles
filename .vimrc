@@ -40,8 +40,8 @@ autocmd BufEnter * call PatchColors()
 let g:currentmode={
    \ 'n':      'NORMAL',
    \ 'v':      'VISUAL',
-   \ 'V':      'V·LINE',
-   \ "\<C-V>": 'V·BLOCK',
+   \ 'V':      'VISUAL',
+   \ "\<C-V>": 'VISUAL',
    \ 'i':      'INSERT',
    \ 'R':      'R',
    \ 'Rv':     'V·REPLACE',
