@@ -16,7 +16,6 @@ set wildmenu
 set lazyredraw
 set showmatch
 set title
-set ruler
 set laststatus=2
 set conceallevel=2
 
@@ -49,31 +48,25 @@ let g:currentmode={
 \}
 set statusline=
 set statusline+=\ %-7(%{g:currentmode[mode()]}%)
+set statusline+=%{&paste?'PASTE':''}
 set statusline+=\ %F
-
 set statusline+=%=
 set statusline+=\ %5(%lL%)
 set statusline+=\ %5(%{wordcount().words}\ words%)
 
 " }}}
-" Type {{{
-
-set showbreak=↪\
-
-" }}}
-" Movement {{{
+" Movement and Splits {{{
 
 nnoremap j gj
 nnoremap k gk
 nnoremap B ^
 nnoremap E $
+map q: <Nop>
+nnoremap Q <nop>
 
 " Allows scrolling through autocomplete with j and k
 inoremap <expr> j ((pumvisible())?("\<C-n>"):("j"))
 inoremap <expr> k ((pumvisible())?("\<C-p>"):("k"))
-
-" }}}
-" Split windows {{{
 
 " Opening and closing splits
 nnoremap <leader>v <C-w>v<C-w>l
@@ -94,26 +87,33 @@ set tabstop=4
 set softtabstop=4
 set shiftwidth=4
 set expandtab
+set showbreak=↪\
 
-" }}}
-" Folding {{{
+autocmd Filetype javascript setlocal ts=2 sw=2 sts=0
+au BufRead,BufNewFile *.ts set filetype=javascript
+au BufRead,BufNewFile *.tsx set filetype=javascript
+au BufRead,BufNewFile *.jsx set filetype=javascript
 
+" Folding
 set foldenable
 set foldnestmax=2
 set foldmethod=indent
 vnoremap <Space> zf
 nnoremap <Space> za
 
+autocmd FileType vim set foldmethod=marker
+
 " }}}
 " Copy and Paste {{{
 
 set pastetoggle=<leader>p 
-set clipboard=unnamed 
-map q: <Nop>
-nnoremap Q <nop>
+set clipboard=unnamed
+noremap Y "+y
 
 " }}}
 " Miscellaneous {{{
+autocmd Filetype text setlocal spell
+autocmd Filetype markdown setlocal spell
 
 " Set the title of the Terminal to the currently open file
 function! SetTerminalTitle()
@@ -129,22 +129,6 @@ function! SetTerminalTitle()
 endfunction
 
 autocmd BufEnter * call SetTerminalTitle()
-
-" }}}
-" Filetype Specific {{{
-autocmd FileType vim set foldlevel=0
-autocmd FileType vim set foldmethod=marker
-
-autocmd Filetype javascript setlocal ts=2 sw=2 sts=0
-au BufRead,BufNewFile *.ts set filetype=javascript
-au BufRead,BufNewFile *.tsx set filetype=javascript
-au BufRead,BufNewFile *.jsx set filetype=javascript
-
-autocmd Filetype text set textwidth=79
-autocmd Filetype text setlocal spell
-
-autocmd Filetype markdown set textwidth=79
-autocmd Filetype markdown setlocal spell
 " }}}
 
 " Plugin Setup {{{
@@ -154,83 +138,61 @@ set nocompatible
 filetype off
 set rtp+=~/dotfiles/bundle/Vundle.vim
 call vundle#begin()
-
 Plugin 'VundleVim/Vundle.vim'
 
 " File Tree with <Leader>ft
 Plugin 'scrooloose/nerdtree'
+noremap <leader>ft :NERDTreeToggle<CR>
+
 " File search with <C-p>
 Plugin 'kien/ctrlp.vim'
-" Line search with Ack
-Plugin 'mileszs/ack.vim'
-" Better search highlighting
-Plugin 'haya14busa/incsearch.vim'
-" Edit surrounding elements of text objects
-Plugin 'tpope/vim-surround'
-" Comment lines easily
-Plugin 'tpope/vim-commentary'
-" Use . for plugin commands
-Plugin 'tpope/vim-repeat'
-" Align elements by spacing
-Plugin 'junegunn/vim-easy-align'
-" Auto complete for delimitrs
-Plugin 'Raimondi/delimitMate'
-
-" Note-taking
-Plugin 'vimwiki/vimwiki'
-Plugin 'plasticboy/vim-markdown'
-Plugin 'junegunn/goyo.vim'
-Plugin 'junegunn/limelight.vim'
-
-" Syntax
-Plugin 'othree/html5.vim'
-
-" Vundle End 
-call vundle#end()
-filetype plugin indent on
-
-" }}}
-" Plugin Settings {{{
-
-" Ctrl-P
 let g:ctrlp_working_path_mode = 'a'
 let g:ctrlp_custom_ignore = 'node_modules\|DS_Store|_build|public'
 
-" To use Ack
+" Line search with Ack
+Plugin 'mileszs/ack.vim'
 map <leader>a :LAck!<Space>
-" Visually selected ack
-vnoremap <leader>a y:Ack <C-r>=fnameescape(@")<CR><CR>
-" Find under cursor
-noremap <leader>f :LAck! <cword><CR>
 
-" Search
+" Better search highlighting
+Plugin 'haya14busa/incsearch.vim'
 map /  <Plug>(incsearch-forward)
 map ?  <Plug>(incsearch-backward)
 map g/ <Plug>(incsearch-stay)
 
-" Align tabular
+" Align elements by spacing
+Plugin 'junegunn/vim-easy-align'
 xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
 
-" File management
-noremap <leader>ft :NERDTreeToggle<CR>
+" Vim Wiki
+Plugin 'vimwiki/vimwiki'
+let g:vimwiki_list = [{
+    \ 'path': '~/ideaspace/notes',
+    \ 'syntax': 'markdown',
+    \ 'ext': '.md',
+    \ 'auto_diary_index': 1
+\ }]
 
-" Go Yo and Lime Light
+" Focus and type-writer mode
+Plugin 'junegunn/goyo.vim'
+Plugin 'junegunn/limelight.vim'
 noremap <leader>g :Goyo <bar> highlight StatusLineNC ctermfg=grey <CR>
 let g:goyo_height='80%'
+
 autocmd! User GoyoEnter Limelight  | set scrolloff=999
 autocmd! User GoyoLeave Limelight! | set scrolloff=0
 let g:limelight_conceal_ctermfg = 'gray'
 
-" Vim Wiki
-let g:vimwiki_list = [{
-            \ 'path': '~/ideaspace/notes', 
-            \ 'syntax': 'markdown', 
-            \ 'ext': '.md', 
-            \ 'auto_diary_index': 1
-            \ }]
+" Others
+Plugin 'tpope/vim-surround'       " Edit surrounding elements
+Plugin 'tpope/vim-commentary'     " Comment lines easily
+Plugin 'tpope/vim-repeat'         " Use . for plugin commands
+Plugin 'Raimondi/delimitMate'     " Auto complete for delimitrs
+Plugin 'othree/html5.vim'         " HTML syntax
+Plugin 'plasticboy/vim-markdown'  " Syntax for markdown
 
-" Vim Medieval
-let g:medieval_langs = ['python=python3', 'sh', 'console=bash']
-nnoremap <leader>E :<C-U>EvalBlock<CR>
+" Vundle End
+call vundle#end()
+filetype plugin indent on
+
 " }}}
