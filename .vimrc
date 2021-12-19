@@ -18,6 +18,7 @@ set showmatch
 set title
 set laststatus=2
 set conceallevel=2
+set scrolloff=10
 
 " }}}
 " Color {{{
@@ -113,7 +114,9 @@ noremap Y "+y
 " }}}
 " Miscellaneous {{{
 autocmd Filetype text setlocal spell
+autocmd Filetype text set textwidth=79
 autocmd Filetype markdown setlocal spell
+autocmd Filetype markdown set textwidth=79
 
 " Set the title of the Terminal to the currently open file
 function! SetTerminalTitle()
@@ -172,6 +175,7 @@ let g:vimwiki_list = [{
     \ 'ext': '.md',
     \ 'auto_diary_index': 1
 \ }]
+au BufNewFile ~/ideaspace/notes/diary/*.md :silent 0r !~/ideaspace/notes/diary/diary_template.py '%'
 
 " Focus and type-writer mode
 Plugin 'junegunn/goyo.vim'
@@ -180,7 +184,7 @@ noremap <leader>g :Goyo <bar> highlight StatusLineNC ctermfg=grey <CR>
 let g:goyo_height='80%'
 
 autocmd! User GoyoEnter Limelight  | set scrolloff=999
-autocmd! User GoyoLeave Limelight! | set scrolloff=0
+autocmd! User GoyoLeave Limelight! | set scrolloff=10
 let g:limelight_conceal_ctermfg = 'gray'
 
 " Others
@@ -189,6 +193,7 @@ Plugin 'tpope/vim-commentary'     " Comment lines easily
 Plugin 'tpope/vim-repeat'         " Use . for plugin commands
 Plugin 'Raimondi/delimitMate'     " Auto complete for delimitrs
 Plugin 'othree/html5.vim'         " HTML syntax
+Plugin 'godlygeek/tabular'        " (Requirement for markdown)
 Plugin 'plasticboy/vim-markdown'  " Syntax for markdown
 
 " Vundle End
