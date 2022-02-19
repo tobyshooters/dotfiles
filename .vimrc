@@ -47,13 +47,22 @@ let g:currentmode={
    \ 'Rv':     'V·REPLACE',
    \ 'c':      'COMMAND',
 \}
+
+function WordCount()
+    if has_key(wordcount(), 'visual_words')
+        return wordcount().visual_words." of ".wordcount().words
+    else
+        return wordcount().words
+    endif
+endfunction
+
 set statusline=
 set statusline+=\ %-7(%{g:currentmode[mode()]}%)
 set statusline+=%{&paste?'PASTE':''}
 set statusline+=\ %F
 set statusline+=%=
-set statusline+=\ %5(%lL%)
-set statusline+=\ %5(%{wordcount().words}\ words%)
+set statusline+=\ %5(%{WordCount()}\ words%)
+set statusline+=\ %4(%lL%)
 
 " }}}
 " Movement and Splits {{{
