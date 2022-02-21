@@ -59,7 +59,7 @@ endfunction
 set statusline=
 set statusline+=\ %-7(%{g:currentmode[mode()]}%)
 set statusline+=%{&paste?'PASTE':''}
-set statusline+=\ %F
+set statusline+=%{expand('%:~:.')}
 set statusline+=%=
 set statusline+=\ %5(%{WordCount()}\ words%)
 set statusline+=\ %4(%lL%)
