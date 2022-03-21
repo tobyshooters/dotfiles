@@ -57,7 +57,7 @@ function WordCount()
 endfunction
 
 set statusline=
-set statusline+=\ %-7(%{g:currentmode[mode()]}%)
+set statusline+=\ %-8(%{g:currentmode[mode()]}%)
 set statusline+=%{&paste?'PASTE':''}
 set statusline+=%{expand('%:~:.')}
 set statusline+=%=
