@@ -17,3 +17,5 @@ source $ZSH/oh-my-zsh.sh
 alias ls="tree -L 1"
 alias emacs="emacs -nw"
 alias textedit="open -a TextEdit"
+
+alias gl='git log --all --graph --pretty=format:"%C(auto)%h %C(blue)%aN %C(magenta)%ad%C(auto)%d %Creset%s" --date=format:"%Y-%m-%d %H:%M"'
