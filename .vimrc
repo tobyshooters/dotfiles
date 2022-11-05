@@ -123,6 +123,13 @@ set clipboard=unnamed
 noremap Y "+y
 
 " }}}
+
+" Makefiles {{{
+
+:let &makeprg = 'if [ -f Makefile ]; then make Release && make RunRelease; else make Release -C .. && make RunRelease -C ..; fi'
+
+"}}}
+
 " Miscellaneous {{{
 autocmd Filetype text setlocal spell
 autocmd Filetype text set textwidth=79
@@ -202,6 +209,12 @@ autocmd! User GoyoEnter Limelight  | set scrolloff=999
 autocmd! User GoyoLeave Limelight! | set scrolloff=10
 let g:limelight_conceal_ctermfg = 'gray'
 let g:limelight_paragraph_span = 1
+
+" Style
+Plugin 'nvie/vim-flake8'
+autocmd BufWritePost *.py call flake8#Flake8()
+
+Plugin 'eslint/eslint'
 
 " Others
 Plugin 'tpope/vim-surround'       " Edit surrounding elements
