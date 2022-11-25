@@ -3,3 +3,10 @@ bindsym $mod+h focus left
 bindsym $mod+j focus down
 bindsym $mod+k focus up
 bindsym $mod+l focus right
+
+mode "resize" {
+    bindsym h resize shrink left 10 px or 10 ppt
+    bindsym j resize shrink down 10 px or 10 ppt
+    bindsym k resize shrink up 10 px or 10 ppt
+    bindsym l resize shrink right 10 px or 10 ppt
+}
