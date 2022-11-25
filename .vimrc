@@ -57,12 +57,14 @@ function WordCount()
 endfunction
 
 set statusline=
-set statusline+=\ %-8(%{g:currentmode[mode()]}%)
-set statusline+=%{&paste?'PASTE':''}
-set statusline+=%{expand('%:~:.')}
-set statusline+=%=
-set statusline+=\ %5(%{WordCount()}\ words%)
-set statusline+=\ %4(%lL%)
+set statusline+=\ %-8(%{g:currentmode[mode()]}%) "mode
+set statusline+=%{&paste?'PASTE\ ':''}           "paste mode
+set statusline+=%{expand('%:~:.')}               "filepath
+set statusline+=\ %y                             "filetype
+set statusline+=\ %m                             "file is modified
+set statusline+=%=                               "padding
+set statusline+=\ %5(%{WordCount()}\ words%)     "word count
+set statusline+=\ %5(%L\ lines%)                "line count
 
 " }}}
 " Movement and Splits {{{
@@ -148,6 +150,10 @@ function! SetTerminalTitle()
 endfunction
 
 autocmd BufEnter * call SetTerminalTitle()
+
+" Open Frameworks
+:let &makeprg = 'if [ -f Makefile ]; then make Release && make RunRelease; else make Release -C .. && make RunRelease -C ..; fi'
+
 " }}}
 
 " Plugin Setup {{{
@@ -202,6 +208,7 @@ let g:goyo_height='80%'
 autocmd! User GoyoEnter Limelight  | set scrolloff=999
 autocmd! User GoyoLeave Limelight! | set scrolloff=10
 let g:limelight_conceal_ctermfg = 'gray'
+let g:limelight_paragraph_span = 1
 
 " Style
 Plugin 'nvie/vim-flake8'

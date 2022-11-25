@@ -17,6 +17,7 @@ source $ZSH/oh-my-zsh.sh
 alias ls="tree -L 1"
 alias emacs="emacs -nw"
 alias textedit="open -a TextEdit"
+
 alias ack="ack -i -B 1 -A 2"
 alias cfmt="clang-format -i --style=Mozilla *.cpp *.h"
 
