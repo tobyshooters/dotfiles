@@ -222,8 +222,6 @@ Plugin 'tpope/vim-commentary'     " Comment lines easily
 Plugin 'tpope/vim-repeat'         " Use . for plugin commands
 Plugin 'Raimondi/delimitMate'     " Auto complete for delimitrs
 Plugin 'othree/html5.vim'         " HTML syntax
-Plugin 'godlygeek/tabular'        " (Requirement for markdown)
-Plugin 'plasticboy/vim-markdown'  " Syntax for markdown
 
 " Vundle End
 call vundle#end()
