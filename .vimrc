@@ -219,14 +219,12 @@ let g:limelight_paragraph_span = 1
 Plugin 'nvie/vim-flake8'
 autocmd BufWritePost *.py call flake8#Flake8()
 
-Plugin 'eslint/eslint'
-
 " Others
-Plugin 'tpope/vim-surround'       " Edit surrounding elements
-Plugin 'tpope/vim-commentary'     " Comment lines easily
-Plugin 'tpope/vim-repeat'         " Use . for plugin commands
-Plugin 'Raimondi/delimitMate'     " Auto complete for delimitrs
-Plugin 'othree/html5.vim'         " HTML syntax
+Plugin 'tpope/vim-surround'         " Edit surrounding elements
+Plugin 'tpope/vim-commentary'       " Comment lines easily
+Plugin 'tpope/vim-repeat'           " Use . for plugin commands
+Plugin 'Raimondi/delimitMate'       " Auto complete for delimitrs
+Plugin 'othree/html5.vim'           " HTML syntax
 
 " Vundle End
 call vundle#end()
