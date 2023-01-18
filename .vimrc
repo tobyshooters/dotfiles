@@ -1,6 +1,16 @@
 " vimrc 
 " Author: Cristobal Sciutto
 
+" To Learn:
+" vis vas vip vap (sentences and paragraphs)
+" * to find current word
+" gx to open link
+" gd to go to definition (ctrl+o to return)
+" gt to switch tabs
+" cc to change current line
+" :r! to print command result inline
+" {} for paragraph movement
+
 " Basic Settings {{{
 
 syntax enable
@@ -92,6 +102,7 @@ nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 
+" Tabs
 nnoremap <leader>t <Esc>:tabnew<CR>
 
 " }}}
@@ -125,13 +136,6 @@ set clipboard=unnamed
 noremap Y "+y
 
 " }}}
-
-" Makefiles {{{
-
-:let &makeprg = 'if [ -f Makefile ]; then make Release && make RunRelease; else make Release -C .. && make RunRelease -C ..; fi'
-
-"}}}
-
 " Miscellaneous {{{
 autocmd Filetype text setlocal spell
 autocmd Filetype text set textwidth=79
@@ -157,7 +161,6 @@ autocmd BufEnter * call SetTerminalTitle()
 :let &makeprg = 'if [ -f Makefile ]; then make Release && make RunRelease; else make Release -C .. && make RunRelease -C ..; fi'
 
 " }}}
-
 " Plugin Setup {{{
 
 " Vundle Setup
