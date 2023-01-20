@@ -1,6 +1,16 @@
 " vimrc 
 " Author: Cristobal Sciutto
 
+" To Learn:
+" vis vas vip vap (sentences and paragraphs)
+" * to find current word
+" gx to open link
+" gd to go to definition (ctrl+o to return)
+" gt to switch tabs
+" cc to change current line
+" :r! to print command result inline
+" {} for paragraph movement
+
 " Basic Settings {{{
 
 syntax enable
@@ -92,6 +102,9 @@ nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 
+" Tabs
+nnoremap <leader>t <Esc>:tabnew<CR>
+
 " }}}
 " Indentation {{{
 
@@ -123,13 +136,6 @@ set clipboard=unnamed
 noremap Y "+y
 
 " }}}
-
-" Makefiles {{{
-
-:let &makeprg = 'if [ -f Makefile ]; then make Release && make RunRelease; else make Release -C .. && make RunRelease -C ..; fi'
-
-"}}}
-
 " Miscellaneous {{{
 autocmd Filetype text setlocal spell
 autocmd Filetype text set textwidth=79
@@ -155,7 +161,6 @@ autocmd BufEnter * call SetTerminalTitle()
 :let &makeprg = 'if [ -f Makefile ]; then make Release && make RunRelease; else make Release -C .. && make RunRelease -C ..; fi'
 
 " }}}
-
 " Plugin Setup {{{
 
 " Vundle Setup
@@ -214,16 +219,12 @@ let g:limelight_paragraph_span = 1
 Plugin 'nvie/vim-flake8'
 autocmd BufWritePost *.py call flake8#Flake8()
 
-Plugin 'eslint/eslint'
-
 " Others
-Plugin 'tpope/vim-surround'       " Edit surrounding elements
-Plugin 'tpope/vim-commentary'     " Comment lines easily
-Plugin 'tpope/vim-repeat'         " Use . for plugin commands
-Plugin 'Raimondi/delimitMate'     " Auto complete for delimitrs
-Plugin 'othree/html5.vim'         " HTML syntax
-Plugin 'godlygeek/tabular'        " (Requirement for markdown)
-Plugin 'plasticboy/vim-markdown'  " Syntax for markdown
+Plugin 'tpope/vim-surround'         " Edit surrounding elements
+Plugin 'tpope/vim-commentary'       " Comment lines easily
+Plugin 'tpope/vim-repeat'           " Use . for plugin commands
+Plugin 'Raimondi/delimitMate'       " Auto complete for delimitrs
+Plugin 'othree/html5.vim'           " HTML syntax
 
 " Vundle End
 call vundle#end()

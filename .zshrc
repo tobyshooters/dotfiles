@@ -19,8 +19,9 @@ alias emacs="emacs -nw"
 alias textedit="open -a TextEdit"
 
 alias ack="ack -i -B 1 -A 2"
-alias cfmt="clang-format -i --style=Microsoft *.cpp *.h"
+alias cfmt="clang-format -i --style=Mozilla *.cpp *.h"
 
+alias gb='git branch --sort=-committerdate'
 alias gl='git log --all --graph --pretty=format:"%C(auto)%h %C(blue)%aN %C(magenta)%ad%C(auto)%d %Creset%s" --date=format:"%Y-%m-%d %H:%M"'
 alias gll='git log --first-parent --pretty=format:"%C(auto)%h %C(magenta)%ad%C(auto)%d %C(blue)%aN %Creset%s" --date=format:"%Y-%m-%d %H:%M"'
 
