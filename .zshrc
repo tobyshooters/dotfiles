@@ -33,3 +33,4 @@ if [ -f ~/.last_dir ]; then
 fi
 
 export PG_OF_PATH=/home/cristobal/dev/of_v0.11.2
+export PATH="/opt/homebrew/opt/tcl-tk/bin:$PATH"
