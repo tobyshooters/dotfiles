@@ -1,19 +1,21 @@
-# zshell config export ZSH=~/.oh-my-zsh
+# zshell config 
+export ZSH=~/.oh-my-zsh
 
 ZSH_THEME="robbyrussell"
 HYPHEN_INSENSITIVE="true"
 ENABLE_CORRECTION="true"
 COMPLETION_WAITING_DOTS="true"
 ZSH_DISABLE_COMPFIX="true"
+
 plugins=(git)
+
+source $ZSH/oh-my-zsh.sh
 
 export VISUAL=vim
 export EDITOR="$VISUAL"
 
 export PLAN9=/usr/local/plan9
 export PATH=$PATH:$PLAN9/bin
-
-source $ZSH/oh-my-zsh.sh
 
 alias ls="tree -L 1"
 alias clear='printf "\033[H\033[2J"'
