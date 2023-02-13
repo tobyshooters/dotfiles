@@ -12,6 +12,11 @@ ZSH_DISABLE_COMPFIX="true"
 export VISUAL=vim
 export EDITOR="$VISUAL"
 
+export PATH="$PATH:/home/cristobal/dev/MONO-REPO/dev-scripts"
+
+export PLAN9=/usr/local/plan9
+export PATH=$PATH:$PLAN9/bin
+
 source $ZSH/oh-my-zsh.sh
 
 alias ls="tree -L 1"
