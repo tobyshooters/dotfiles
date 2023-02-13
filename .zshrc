@@ -1,18 +1,14 @@
-# zshell config
-export ZSH=~/.oh-my-zsh
+# zshell config export ZSH=~/.oh-my-zsh
 
 ZSH_THEME="robbyrussell"
 HYPHEN_INSENSITIVE="true"
 ENABLE_CORRECTION="true"
 COMPLETION_WAITING_DOTS="true"
-plugins=(git)
-
 ZSH_DISABLE_COMPFIX="true"
+plugins=(git)
 
 export VISUAL=vim
 export EDITOR="$VISUAL"
-
-export PATH="$PATH:/home/cristobal/dev/MONO-REPO/dev-scripts"
 
 export PLAN9=/usr/local/plan9
 export PATH=$PATH:$PLAN9/bin
@@ -20,6 +16,8 @@ export PATH=$PATH:$PLAN9/bin
 source $ZSH/oh-my-zsh.sh
 
 alias ls="tree -L 1"
+alias clear='printf "\033[H\033[2J"'
+
 alias emacs="emacs -nw"
 alias textedit="open -a TextEdit"
 
@@ -39,4 +37,6 @@ if [ -f ~/.last_dir ]; then
 fi
 
 export PG_OF_PATH=/home/cristobal/dev/of_v0.11.2
+
 export PATH="/opt/homebrew/opt/tcl-tk/bin:$PATH"
+export PATH="$PATH:/home/cristobal/dev/MONO-REPO/dev-scripts"
