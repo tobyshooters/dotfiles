@@ -1,18 +1,14 @@
 #!bin/bash
-cd ~
+sudo apt install vim git zsh tree ack
 
-# Vim installs
+# May need to do more work to set zsh as default
+chsh -s $(which zsh)
+ln -s ~/dotfiles/.zshrc .zshrc
+
+# Vim plugins
 ln -s ~/dotfiles/.vimrc .vimrc
 git clone https://github.com/VundleVim/Vundle.vim.git ~/dotfiles/bundle/Vundle.vim
 vim +PluginInstall +qall
 
 # Install oh-my-zsh
-sudo apt install zsh
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
-
-# Dot files
-mkdir .i3
-ln -s ~/dotfiles/.i3config .i3/config
-ln -s ~/dotfiles/.tmux.conf .tmux.conf
-ln -s ~/dotfiles/.zshrc .zshrc
-ln -s ~/dotfiles/.emacs .emacs
