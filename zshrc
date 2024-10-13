@@ -21,20 +21,39 @@ export PG_OF_PATH=/home/cristobal/dev/of_v0.11.2
 
 export PATH="$PATH:/home/cristobal/dev/MONO-REPO/dev-scripts"
 export PATH="$PATH:/home/cristobal/.local/bin"
+export PATH="$PATH:/usr/local/go/bin"
 
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+export PIPENV_PYTHON="$PYENV_ROOT/shims/python"
+
+# General
 alias ls="tree -L 1"
 alias clear='printf "\033[H\033[2J"'
-
-alias emacs="emacs -nw"
-alias textedit="open -a TextEdit"
-
 alias ack="ack -i -B 1 -A 2"
+alias emacs="emacs -nw"
+alias flake8="flake8 --extend-ignore E501"
 alias cfmt="clang-format -i --style=Mozilla *.cpp *.h"
+alias scrot='scrot /home/cristobal/air-desktop/linux_%b%d_%H%M%S.png'
 
 alias gs='git status -sb'
 alias gb='git branch --sort=-committerdate'
 alias gl='git log --all --graph --pretty=format:"%C(auto)%h %C(blue)%aN %C(magenta)%ad%C(auto)%d %Creset%s" --date=format:"%Y-%m-%d %H:%M"'
 alias gll='git log --first-parent --pretty=format:"%C(auto)%h %C(magenta)%ad%C(auto)%d %C(blue)%aN %Creset%s" --date=format:"%Y-%m-%d %H:%M"'
+
+function gcscp { 
+    if [ -z "$1" ]; then
+        echo "Google Cloud Storage Copy"
+        echo "> gcscp (--dev) path dest"
+        return 1
+    elif [ "$1" = "--dev" ]; then
+        echo "Downloading $2 to ${3:-.}"
+        gsutil cp gs://reduct-dev-storage/$2 ${3:-.}
+    else
+        echo "Downloading $1 to ${2:-.}"
+        gsutil cp gs://reduct-prod-storage/$1 ${2:-.}
+    fi
+}
 
 function cd {
     builtin cd $@
@@ -44,6 +63,18 @@ if [ -f ~/.last_dir ]; then
     cd "`cat ~/.last_dir`"
 fi
 
+# OS-specific
+if [[ "$(uname)" == "Darwin" ]]; then
+    alias textedit="open -a TextEdit"
+fi
+
+if [[ "$(uname)" == "Linux" ]]; then
+    alias pbcopy="xclip -selection clipboard"
+    setxkbmap -option "compose:ralt"
+fi
+
+
+# Random-ass stuff that libraries inject into here:
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

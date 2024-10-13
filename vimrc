@@ -118,11 +118,12 @@ autocmd Filetype javascript setlocal ts=2 sw=2 sts=0
 au BufRead,BufNewFile *.ts set filetype=javascript
 au BufRead,BufNewFile *.tsx set filetype=javascript
 au BufRead,BufNewFile *.jsx set filetype=javascript
+au BufRead,BufNewFile *.html set filetype=javascript
 
 " Folding
 set foldenable
 set foldnestmax=2
-set foldmethod=indent
+set foldmethod=manual
 vnoremap <Space> zf
 nnoremap <Space> za
 
@@ -137,9 +138,9 @@ noremap Y "+y
 
 " }}}
 " Miscellaneous {{{
-autocmd Filetype text setlocal spell
+" autocmd Filetype text setlocal spell
 autocmd Filetype text set textwidth=79
-autocmd Filetype markdown setlocal spell
+" autocmd Filetype markdown setlocal spell
 autocmd Filetype markdown set textwidth=79
 
 " Set the title of the Terminal to the currently open file
@@ -156,9 +157,6 @@ function! SetTerminalTitle()
 endfunction
 
 autocmd BufEnter * call SetTerminalTitle()
-
-" Open Frameworks
-:let &makeprg = 'if [ -f Makefile ]; then make Release && make RunRelease; else make Release -C .. && make RunRelease -C ..; fi'
 
 " }}}
 " Plugin Setup {{{
@@ -202,7 +200,7 @@ let g:vimwiki_list = [{
     \ 'ext': '.md',
     \ 'auto_diary_index': 1
 \ }]
-au BufNewFile ~/ideaspace/notes/diary/*.md :silent 0r !~/ideaspace/notes/diary/diary_template.py '%'
+" au BufNewFile ~/ideaspace/notes/diary/*.md :silent 0r !~/ideaspace/notes/diary/diary_template.py '%'
 
 " Focus and type-writer mode
 Plugin 'junegunn/goyo.vim'
@@ -220,11 +218,11 @@ Plugin 'nvie/vim-flake8'
 autocmd BufWritePost *.py call flake8#Flake8()
 
 " Others
-Plugin 'tpope/vim-surround'         " Edit surrounding elements
-Plugin 'tpope/vim-commentary'       " Comment lines easily
-Plugin 'tpope/vim-repeat'           " Use . for plugin commands
-Plugin 'Raimondi/delimitMate'       " Auto complete for delimitrs
-Plugin 'othree/html5.vim'           " HTML syntax
+Plugin 'tpope/vim-surround'   " Edit surrounding elements
+Plugin 'tpope/vim-commentary' " Comment lines easily
+Plugin 'tpope/vim-repeat'     " Use . for plugin commands
+Plugin 'Raimondi/delimitMate' " Auto complete for delimiters
+Plugin 'othree/html5.vim'     " HTML syntax
 
 " Vundle End
 call vundle#end()
