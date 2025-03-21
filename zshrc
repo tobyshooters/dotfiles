@@ -11,7 +11,7 @@ plugins=(git)
 
 source $ZSH/oh-my-zsh.sh
 
-export VISUAL=vim
+export VISUAL=nvim
 export EDITOR="$VISUAL"
 
 export PLAN9=/usr/local/plan9
@@ -22,6 +22,8 @@ export PG_OF_PATH=/home/cristobal/dev/of_v0.11.2
 export PATH="$PATH:/home/cristobal/dev/MONO-REPO/dev-scripts"
 export PATH="$PATH:/home/cristobal/.local/bin"
 export PATH="$PATH:/usr/local/go/bin"
+export PATH="$PATH:$HOME/gs-venv/bin"
+export PATH="$PATH:/usr/local/texlive/2024/bin/x86_64-linux"
 
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
@@ -29,12 +31,14 @@ export PIPENV_PYTHON="$PYENV_ROOT/shims/python"
 
 # General
 alias ls="tree -L 1"
+alias vi='nvim'
+alias vim='nvim'
 alias clear='printf "\033[H\033[2J"'
 alias ack="ack -i -B 1 -A 2"
 alias emacs="emacs -nw"
 alias flake8="flake8 --extend-ignore E501"
 alias cfmt="clang-format -i --style=Mozilla *.cpp *.h"
-alias scrot='scrot /home/cristobal/air-desktop/linux_%b%d_%H%M%S.png'
+alias scrot="scrot ~/ideaspace/inbox/screenshot"
 
 alias gs='git status -sb'
 alias gb='git branch --sort=-committerdate'
@@ -86,3 +90,4 @@ if [ -f '/home/cristobal/dev/MONO-REPO/google-cloud-sdk/path.zsh.inc' ]; then . 
 
 # The next line enables shell command completion for gcloud.
 if [ -f '/home/cristobal/dev/MONO-REPO/google-cloud-sdk/completion.zsh.inc' ]; then . '/home/cristobal/dev/MONO-REPO/google-cloud-sdk/completion.zsh.inc'; fi
+. "/home/cristobal/.deno/env"

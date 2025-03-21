@@ -112,13 +112,14 @@ set tabstop=4
 set softtabstop=4
 set shiftwidth=4
 set expandtab
-set showbreak=↪\
+set linebreak
+" set showbreak=↪\
 
 autocmd Filetype javascript setlocal ts=2 sw=2 sts=0
 au BufRead,BufNewFile *.ts set filetype=javascript
 au BufRead,BufNewFile *.tsx set filetype=javascript
 au BufRead,BufNewFile *.jsx set filetype=javascript
-au BufRead,BufNewFile *.html set filetype=javascript
+au BufRead,BufNewFile *.folk set filetype=tcl
 
 " Folding
 set foldenable
@@ -127,7 +128,23 @@ set foldmethod=manual
 vnoremap <Space> zf
 nnoremap <Space> za
 
-autocmd FileType vim set foldmethod=marker
+autocmd FileType vim setlocal foldmethod=marker
+
+let g:markdown_folding = 1
+
+function! MarkdownLevel()
+    if getline(v:lnum) =~ '^## .*$'
+        return ">1"
+    elseif getline(v:lnum) =~ '^### .*$'
+        return ">2"
+    else
+        return "="
+    endif
+endfunction
+
+autocmd BufEnter *.md setlocal foldmethod=expr
+autocmd BufEnter *.md setlocal foldexpr=MarkdownLevel()
+
 
 " }}}
 " Copy and Paste {{{
@@ -200,7 +217,6 @@ let g:vimwiki_list = [{
     \ 'ext': '.md',
     \ 'auto_diary_index': 1
 \ }]
-" au BufNewFile ~/ideaspace/notes/diary/*.md :silent 0r !~/ideaspace/notes/diary/diary_template.py '%'
 
 " Focus and type-writer mode
 Plugin 'junegunn/goyo.vim'
@@ -211,11 +227,14 @@ let g:goyo_height='80%'
 autocmd! User GoyoEnter Limelight  | set scrolloff=999
 autocmd! User GoyoLeave Limelight! | set scrolloff=10
 let g:limelight_conceal_ctermfg = 'gray'
-let g:limelight_paragraph_span = 1
+let g:limelight_paragraph_span = 100
 
 " Style
 Plugin 'nvie/vim-flake8'
 autocmd BufWritePost *.py call flake8#Flake8()
+
+" Copilot
+Plugin 'github/copilot.vim'
 
 " Others
 Plugin 'tpope/vim-surround'   " Edit surrounding elements
