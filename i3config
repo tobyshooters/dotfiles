@@ -1,3 +1,7 @@
+# dmenu
+bindsym $mod+d exec --no-startup-id dmenu_run -l 10
+bindsym $mod+g exec url=$(cat ~/ideaspace/bookmarks.txt | dmenu -c -l 10) && [ -n "$url" ] && firefox "$url"
+
 # change focus
 bindsym $mod+h focus left
 bindsym $mod+j focus down

@@ -41,6 +41,20 @@ function! PatchColors()
     highlight Visual cterm=None ctermbg=LightYellow
     highlight StatusLine cterm=None ctermfg=235 ctermbg=252
     highlight StatusLineNC cterm=None ctermfg=254 ctermbg=252
+
+    highlight markdownH1     ctermfg=darkblue cterm=bold
+    highlight markdownH2     ctermfg=darkblue cterm=bold
+    highlight markdownH3     ctermfg=darkblue cterm=bold
+    highlight VimwikiHeader1 ctermfg=darkblue cterm=bold
+    highlight VimwikiHeader2 ctermfg=darkblue cterm=bold
+    highlight VimwikiHeader3 ctermfg=darkblue cterm=bold
+
+    highlight TabLine     cterm=none ctermfg=235      ctermbg=252
+    highlight TabLineSel  cterm=bold ctermfg=darkblue ctermbg=255
+    highlight TabLineFill cterm=none ctermfg=NONE     ctermbg=NONE
+
+    highlight IncSearch ctermfg=0 ctermbg=LightYellow cterm=italic
+    highlight Search    ctermfg=0 ctermbg=LightYellow
 endfunction
 
 autocmd BufEnter * call PatchColors()
@@ -104,6 +118,33 @@ nnoremap <C-H> <C-W><C-H>
 
 " Tabs
 nnoremap <leader>t <Esc>:tabnew<CR>
+nnoremap <C-t> :tabnext<CR>
+nnoremap <C-S-t> :tabprevious<CR>
+
+function! SetTabLine()
+  let s = ''
+  for i in range(tabpagenr('$'))
+    " Configure highlighting names
+    if i + 1 == tabpagenr()
+      let s .= '%#TabLineSel#'
+    else
+      let s .= '%#TabLine#'
+    endif
+    
+    " Display just the filename
+    let buflist = tabpagebuflist(i + 1)
+    let winnr = tabpagewinnr(i + 1)
+    let filename = fnamemodify(bufname(buflist[winnr - 1]), ':t')
+    let s .= ' ' . (filename == '' ? '[No Name]' : filename) . ' '
+  endfor
+
+  let s .= '%#TabLineFill#%T'
+  return s
+
+endfunction
+
+set tabline=%!SetTabLine()
+
 
 " }}}
 " Indentation {{{
@@ -115,11 +156,13 @@ set expandtab
 set linebreak
 " set showbreak=↪\
 
+autocmd Filetype c setlocal ts=2 sw=2 sts=0
 autocmd Filetype javascript setlocal ts=2 sw=2 sts=0
 au BufRead,BufNewFile *.ts set filetype=javascript
 au BufRead,BufNewFile *.tsx set filetype=javascript
 au BufRead,BufNewFile *.jsx set filetype=javascript
 au BufRead,BufNewFile *.folk set filetype=tcl
+au BufRead,BufNewFile *.fs,*.fth,*.4th set filetype=forth
 
 " Folding
 set foldenable
@@ -149,12 +192,13 @@ autocmd BufEnter *.md setlocal foldexpr=MarkdownLevel()
 " }}}
 " Copy and Paste {{{
 
-set pastetoggle=<leader>p 
+nnoremap <leader>p :set paste!<CR>
 set clipboard=unnamed
 noremap Y "+y
 
 " }}}
 " Miscellaneous {{{
+
 " autocmd Filetype text setlocal spell
 autocmd Filetype text set textwidth=79
 " autocmd Filetype markdown setlocal spell
@@ -203,6 +247,7 @@ Plugin 'haya14busa/incsearch.vim'
 map /  <Plug>(incsearch-forward)
 map ?  <Plug>(incsearch-backward)
 map g/ <Plug>(incsearch-stay)
+nnoremap <Esc> :noh<CR>
 
 " Align elements by spacing
 Plugin 'junegunn/vim-easy-align'
@@ -233,15 +278,13 @@ let g:limelight_paragraph_span = 100
 Plugin 'nvie/vim-flake8'
 autocmd BufWritePost *.py call flake8#Flake8()
 
-" Copilot
-Plugin 'github/copilot.vim'
-
 " Others
-Plugin 'tpope/vim-surround'   " Edit surrounding elements
-Plugin 'tpope/vim-commentary' " Comment lines easily
-Plugin 'tpope/vim-repeat'     " Use . for plugin commands
-Plugin 'Raimondi/delimitMate' " Auto complete for delimiters
-Plugin 'othree/html5.vim'     " HTML syntax
+Plugin 'tpope/vim-surround'    " Edit surrounding elements
+Plugin 'tpope/vim-commentary'  " Comment lines easily
+Plugin 'tpope/vim-repeat'      " Use . for plugin commands
+Plugin 'Raimondi/delimitMate'  " Auto complete for delimiters
+Plugin 'othree/html5.vim'      " HTML syntax
+Plugin 'bellinitte/uxntal.vim' " Uxntal syntax
 
 " Vundle End
 call vundle#end()
