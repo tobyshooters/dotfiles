@@ -1,6 +1,10 @@
 # dmenu
 bindsym $mod+d exec --no-startup-id dmenu_run -l 10
-bindsym $mod+g exec url=$(cat ~/ideaspace/bookmarks.txt | dmenu -c -l 10) && [ -n "$url" ] && firefox "$url"
+bindsym $mod+g exec \
+    url=$(cat ~/ideaspace/bookmarks.txt \
+    | sed -E 's/https?:\/\/(www\.)?([^/]+)(\/.*)?/\2/' \
+    | dmenu -i -c -l 20) \
+    && [ -n "$url" ] && firefox "https://$url"
 
 # change focus
 bindsym $mod+h focus left
