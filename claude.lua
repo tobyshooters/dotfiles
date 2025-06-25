@@ -1,8 +1,7 @@
 local M = {}
-
 local API_KEY = os.getenv("ANTHROPIC_API_KEY")
 
-function M.send_to_claude()
+function M.ask_claude()
   -- Check API key
   if not API_KEY or API_KEY == "" then
     print("Error: ANTHROPIC_API_KEY not set")
@@ -13,9 +12,7 @@ function M.send_to_claude()
   local start_pos = vim.fn.getpos("'<")
   local end_pos = vim.fn.getpos("'>")
   local lines = vim.fn.getline(start_pos[2], end_pos[2])
-
   if #lines == 0 then return end
-
   local selection = table.concat(lines, "\n")
 
   -- Loading message
@@ -54,11 +51,6 @@ function M.send_to_claude()
           -- Insert response after selection
           vim.fn.append(end_pos[2], response_lines)
 
-          -- Comment the inserted lines
-          local start_line = end_pos[2] + 1
-          local end_line = end_pos[2] + #response_lines
-          vim.cmd(start_line .. "," .. end_line .. "norm gcc")
-
           -- Clear loading indicator
           vim.api.nvim_echo({{""}}, false, {})
 
@@ -72,11 +64,9 @@ function M.send_to_claude()
   })
 end
 
-
-vim.cmd("command! -range Claude lua require('claude').send_to_claude()")
-
+-- Call function on visual selection
 vim.api.nvim_set_keymap(
-    "v", "<leader>c", ":lua require('claude').send_to_claude()<CR>",
+    "v", "<leader>c", ":lua require('claude').ask_claude()<CR>",
     { noremap = true, silent = true }
 )
 
