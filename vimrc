@@ -161,6 +161,8 @@ autocmd Filetype javascript setlocal ts=2 sw=2 sts=0
 au BufRead,BufNewFile *.ts set filetype=javascript
 au BufRead,BufNewFile *.tsx set filetype=javascript
 au BufRead,BufNewFile *.jsx set filetype=javascript
+au BufRead,BufNewFile *.svelte set filetype=javascript
+au BufRead,BufNewFile *.html set filetype=javascript
 au BufRead,BufNewFile *.folk set filetype=tcl
 au BufRead,BufNewFile *.fs,*.fth,*.4th set filetype=forth
 
@@ -193,7 +195,7 @@ autocmd BufEnter *.md setlocal foldexpr=MarkdownLevel()
 " Copy and Paste {{{
 
 nnoremap <leader>p :set paste!<CR>
-set clipboard=unnamed
+set clipboard=unnamedplus
 noremap Y "+y
 
 " }}}

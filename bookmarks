@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# List bookmarks for selection with numbers
+# If not listed, then forward to Google as a search query
+
+sel=$(cat ~/ideaspace/bookmarks.txt | nl -w3 -s ' ' | dmenu -i -c -l 20);
+
+[ $? -eq 0 ] && [ -n "$sel" ] && {
+    echo "$sel" | grep -q "^[ 0-9]" \
+        && firefox "$(echo "$sel" | awk '{print $NF}')" \
+        || firefox "google.com/search?q=$(echo "$sel" | sed 's/ /+/g')"
+}

@@ -1,0 +1,19 @@
+#!/bin/bash
+
+LIBRARY_PATH="$HOME/Libraries/Cristobal's Library"
+
+SELECTION=$(calibredb list --library-path "$LIBRARY_PATH" --fields title,authors,id --sort-by authors --ascending false --for-machine | \
+    jq -r 'def lpad(n): tostring | if (n > length) then ((n - length) * " ") + . else . end;
+           .[] | (.id | lpad(4)) + " " + .authors + " — " + .title' | \
+    dmenu -i -l 30)
+
+[[ -z "$SELECTION" ]] && exit
+
+read BOOK_ID REST <<< "$SELECTION"
+AUTHOR="${REST% — *}"
+TITLE="${REST##* — }"
+
+BOOK_DIR="$LIBRARY_PATH/$AUTHOR/$TITLE ($BOOK_ID)"
+BOOK_FILE=$(find "$BOOK_DIR" -name "*.epub" -o -name "*.pdf" | head -1)
+
+[[ "$BOOK_FILE" == *.epub ]] && ebook-viewer "$BOOK_FILE" || firefox "$BOOK_FILE"

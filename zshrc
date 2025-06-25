@@ -35,8 +35,13 @@ export PIPENV_PYTHON="$PYENV_ROOT/shims/python"
 export FLYCTL_INSTALL="$HOME/.fly"
 export PATH="$FLYCTL_INSTALL/bin:$PATH"
 
+# Load in API key
+if [[ -f ~/dotfiles/anthropic ]]; then
+  export ANTHROPIC_API_KEY=$(cat ~/dotfiles/anthropic | tr -d '\n')
+fi
 
 # General
+alias tree="tree -I 'node_modules'"
 alias ls="tree -L 1"
 alias vi='nvim'
 alias vim='nvim'
@@ -92,18 +97,13 @@ function gcscp {
 
 # Random-ass stuff that libraries inject into here:
 
+# NVM 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 nvm use 22.11.0
 
-export GOOGLE_APPLICATION_CREDENTIALS=/home/cristobal/.reduct-secrets/cristobal-dev.json
-
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '/home/cristobal/dev/MONO-REPO/google-cloud-sdk/path.zsh.inc' ]; then . '/home/cristobal/dev/MONO-REPO/google-cloud-sdk/path.zsh.inc'; fi
-
-# The next line enables shell command completion for gcloud.
-if [ -f '/home/cristobal/dev/MONO-REPO/google-cloud-sdk/completion.zsh.inc' ]; then . '/home/cristobal/dev/MONO-REPO/google-cloud-sdk/completion.zsh.inc'; fi
+# deno
 . "/home/cristobal/.deno/env"
 
 # pnpm
@@ -112,4 +112,16 @@ case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
-# pnpm end
+
+# GCP
+export GOOGLE_APPLICATION_CREDENTIALS=/home/cristobal/.reduct-secrets/cristobal-dev.json
+# export GOOGLE_APPLICATION_CREDENTIALS=/home/cristobal/.config/gcloud/application_default_credentials.json
+
+if [ -f '/home/cristobal/dev/google-cloud-sdk/path.zsh.inc' ]; then \
+    . '/home/cristobal/dev/google-cloud-sdk/path.zsh.inc'; \
+fi
+
+if [ -f '/home/cristobal/dev/google-cloud-sdk/completion.zsh.inc' ]; then \
+    . '/home/cristobal/dev/google-cloud-sdk/completion.zsh.inc'; \
+fi
+
