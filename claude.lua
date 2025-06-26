@@ -1,27 +1,29 @@
 local M = {}
 
 M.config = {
-    api_key = os.getenv("ANTHROPIC_API_KEY"),
-    model = "claude-3-5-sonnet-latest",
-    system = "Be concise and direct in your responses. Respond without unnecessary explanation.",
-    signs = {
-        context = "∙",
-        highlight = "DiagnosticInfo"
-    },
-    keymaps = {
-        ask = "<leader>c",
-        mark = "<leader>cm",
-    }
+  api_key = os.getenv("ANTHROPIC_API_KEY"),
+  model = "claude-3-5-sonnet-latest",
+  system = "Be concise and direct in your responses. Respond without unnecessary explanation.",
+  signs = {
+    context = "∙",
+    highlight = "DiagnosticInfo"
+  },
+  keymaps = {
+    ask = "<leader>c",
+    mark = "<leader>m",
+  }
 }
 
 function M.setup(opts)
+  -- Initialize plugin with optional user config
   M.config = vim.tbl_deep_extend("force", M.config, opts or {})
 
   vim.fn.sign_define("claude_context", {
-      text = M.config.signs.context,
-      texthl = M.config.signs.highlight
+    text = M.config.signs.context,
+    texthl = M.config.signs.highlight
   })
 
+  -- Setup key bindings
   vim.keymap.set('v', M.config.keymaps.ask, M.ask)
   vim.keymap.set('v', M.config.keymaps.mark, M.mark)
 end
@@ -35,14 +37,16 @@ end
 local sign_id = 1
 
 function M.get_sign(bufnr, lnum)
-    local signs = vim.fn.sign_getplaced(bufnr, {group = "claude", lnum = lnum})
-    if signs[1] and signs[1].signs and signs[1].signs[1] then
-        return signs[1].signs[1].id
-    end
-    return nil
+  -- Helper to simplify sign mess
+  local signs = vim.fn.sign_getplaced(bufnr, {group = "claude", lnum = lnum})
+  if signs[1] and signs[1].signs and signs[1].signs[1] then
+    return signs[1].signs[1].id
+  end
+  return nil
 end
 
 function M.mark()
+  -- Mark visually selected lines of code as context
   local first, final = M.get_visual_selection()
   local bufnr = vim.api.nvim_get_current_buf()
 
@@ -70,26 +74,27 @@ function M.mark()
 end
 
 function M.collect()
-    local bufnr = vim.api.nvim_get_current_buf()
-    local signs = vim.fn.sign_getplaced(bufnr, {group = "claude"})
-    if not signs[1] or not signs[1].signs then
-        return ""
-    end
+  -- Collect all lines that have a context sign
+  local bufnr = vim.api.nvim_get_current_buf()
+  local signs = vim.fn.sign_getplaced(bufnr, {group = "claude"})
+  if not signs[1] or not signs[1].signs then
+    return ""
+  end
 
-    local context_lines = {}
-    for _, sign in ipairs(signs[1].signs) do
-        if sign.name == "claude_context" then
-            table.insert(context_lines, sign.lnum)
-        end
+  local context_lines = {}
+  for _, sign in ipairs(signs[1].signs) do
+    if sign.name == "claude_context" then
+      table.insert(context_lines, sign.lnum)
     end
-    table.sort(context_lines)
+  end
+  table.sort(context_lines)
 
-    local contexts = ""
-    for _, lnum in ipairs(context_lines) do
-        local line = vim.api.nvim_buf_get_lines(bufnr, lnum - 1, lnum, false)[1]
-        contexts = contexts .. line .. "\n"
-    end
-    return contexts
+  local contexts = ""
+  for _, lnum in ipairs(context_lines) do
+    local line = vim.api.nvim_buf_get_lines(bufnr, lnum - 1, lnum, false)[1]
+    contexts = contexts .. line .. "\n"
+  end
+  return contexts
 end
 
 function M.ask()
@@ -107,6 +112,8 @@ function M.ask()
   local content = contexts .. selection
 
   vim.notify("Querying Claude...")
+
+  -- Send off to Anthropic
   local curl_cmd = {
     "curl", "-s", "-X", "POST",
     "https://api.anthropic.com/v1/messages",
@@ -121,6 +128,7 @@ function M.ask()
     })
   }
 
+  -- Place output after visual buffer
   vim.fn.jobstart(curl_cmd, {
     stdout_buffered = true,
     on_stdout = function(_, data)
