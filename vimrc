@@ -53,6 +53,8 @@ function! PatchColors()
     highlight TabLineSel  cterm=bold ctermfg=darkblue ctermbg=255
     highlight TabLineFill cterm=none ctermfg=NONE     ctermbg=NONE
 
+    highlight SignColumn cterm=none ctermfg=NONE ctermbg=NONE
+
     highlight IncSearch ctermfg=0 ctermbg=LightYellow cterm=italic
     highlight Search    ctermfg=0 ctermbg=LightYellow
 endfunction
