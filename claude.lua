@@ -1,10 +1,13 @@
 local M = {}
-local API_KEY = os.getenv("ANTHROPIC_API_KEY")
+
+M.config = {
+    api_key = os.getenv("ANTHROPIC_API_KEY"),
+}
 
 function M.ask_claude()
   -- Check API key
-  if not API_KEY or API_KEY == "" then
-    print("Error: ANTHROPIC_API_KEY not set")
+  if not M.config.api_key then
+    vim.notify("ANTHROPIC_API_KEY not set")
     return
   end
 
@@ -24,7 +27,7 @@ function M.ask_claude()
     "https://api.anthropic.com/v1/messages",
     "-H", "content-type: application/json",
     "-H", "anthropic-version: 2023-06-01",
-    "-H", "x-api-key: " .. API_KEY,
+    "-H", "x-api-key: " .. M.config.api_key,
     "-d", vim.json.encode({
       model = "claude-3-5-sonnet-latest",
       max_tokens = 1024,
@@ -55,9 +58,9 @@ function M.ask_claude()
           vim.api.nvim_echo({{""}}, false, {})
 
         elseif ok and parsed.error then
-          print("Claude API Error: " .. (parsed.error.message or "Unknown error"))
+          vim.notify("Claude API Error: " .. (parsed.error.message or "Unknown error"))
         else
-          print("Error parsing Claude response: " .. response)
+          vim.notify("Error parsing Claude response: " .. response)
         end
       end
     end
