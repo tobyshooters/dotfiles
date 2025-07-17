@@ -23,8 +23,7 @@ vim.opt.diffopt:append("foldcolumn:0")
 vim.opt.fillchars = {eob = " "}
 vim.opt.backspace = {"indent", "eol", "start"}
 vim.opt.mouse = "a"
-vim.opt.ignorecase = true
-vim.opt.smartcase = true
+vim.opt.ignorecase = true vim.opt.smartcase = true
 vim.opt.number = true
 vim.opt.showcmd = true
 vim.opt.wildmenu = true
@@ -95,6 +94,27 @@ vim.api.nvim_create_autocmd({"BufRead", "BufNewFile"}, {
   end,
 })
 
+-- Markdown folding configuration
+vim.g.markdown_folding = 1
+
+function _G.markdown_level()
+  local line = vim.fn.getline(vim.v.lnum)
+  if line:match("^## .*$") then
+    return ">1"
+  elseif line:match("^### .*$") then
+    return ">2"
+  else
+    return "="
+  end
+end
+
+vim.api.nvim_create_autocmd("BufEnter", {
+  pattern = "*.md",
+  callback = function()
+    vim.opt_local.foldmethod = "expr"
+    vim.opt_local.foldexpr = "v:lua.markdown_level()"
+  end,
+})
 
 -- Load all plugins
 require("lazy").setup({
@@ -114,32 +134,40 @@ require("lazy").setup({
         require('solarized').setup(opts)
         vim.cmd.colorscheme 'solarized'
 
-        vim.cmd([[
-          autocmd VimEnter,ColorScheme * highlight Normal guibg=#ffffff
-          autocmd VimEnter,ColorScheme * highlight WinSeparator guibg=#ffffff guifg=#bcbcbc
-          autocmd VimEnter,ColorScheme * highlight VertSplit guibg=#ffffff guifg=#bcbcbc
-          autocmd VimEnter,ColorScheme * highlight Visual guibg=#ffffaa gui=bold
+        local function apply_highlights()
+          local highlights = {
+            'highlight Normal       guibg=#ffffff guifg=#000000',
+            'highlight WinSeparator guibg=#ffffff guifg=#bcbcbc',
+            'highlight VertSplit    guibg=#ffffff guifg=#bcbcbc',
+            'highlight Visual       guibg=#ffffaa guifg=none gui=bold',
+            'highlight LineNr       guibg=#ffffff guifg=#999999',
+            'highlight Folded       guibg=#ffffff guifg=#0000aa',
+            'highlight NonText      guifg=#999999',
+            'highlight StatusLine   guifg=#444444 guibg=#dddddd',
+            'highlight StatusLineNC guifg=#aaaaaa guibg=#dddddd',
 
-          autocmd VimEnter,ColorScheme * highlight LineNr guibg=#ffffff guifg=#999999
-          autocmd VimEnter,ColorScheme * highlight Visual guibg=#ffffaa gui=bold
-          autocmd VimEnter,ColorScheme * highlight Folded guibg=#ffffff guifg=#0000aa
-          autocmd VimEnter,ColorScheme * highlight NonText guifg=#999999
-          autocmd VimEnter,ColorScheme * highlight StatusLine guifg=#444444 guibg=#dddddd
-          autocmd VimEnter,ColorScheme * highlight StatusLineNC guifg=#aaaaaa guibg=#dddddd
+            'highlight! link Folded markdownH2',
 
-          autocmd VimEnter,ColorScheme * highlight! link NormalFloat Normal
-          autocmd VimEnter,ColorScheme * highlight! link NeoTreeNormal Normal
-          autocmd VimEnter,ColorScheme * highlight! link TelescopeNormal Normal
+            'highlight NeoTreeCursorLine      guibg=#e8e8e8 guifg=#000000',
+            'highlight TelescopeBorder        guibg=#ffffff',
+            'highlight TelescopePromptBorder  guibg=#ffffff',
+            'highlight TelescopeResultsBorder guibg=#ffffff',
+            'highlight TelescopePreviewBorder guibg=#ffffff',
+            'highlight TelescopeSelection     guibg=#e8e8e8 guifg=#000000',
 
-          autocmd VimEnter,ColorScheme * highlight NeoTreeCursorLine guibg=#e8e8e8 guifg=#000000
+            'highlight! link NormalFloat Normal',
+            'highlight! link NeoTreeNormal Normal',
+            'highlight! link TelescopeNormal Normal',
+          }
+          for _, hl in ipairs(highlights) do
+            vim.cmd(hl)
+          end
+        end
 
-          autocmd VimEnter,ColorScheme * highlight TelescopeBorder guibg=#ffffff
-          autocmd VimEnter,ColorScheme * highlight TelescopePromptBorder guibg=#ffffff
-          autocmd VimEnter,ColorScheme * highlight TelescopeResultsBorder guibg=#ffffff
-          autocmd VimEnter,ColorScheme * highlight TelescopePreviewBorder guibg=#ffffff
-          autocmd VimEnter,ColorScheme * highlight TelescopeSelection guibg=#e8e8e8 guifg=#000000
-
-        ]])
+        vim.api.nvim_create_autocmd({'VimEnter', 'ColorScheme'}, {
+          pattern = '*',
+          callback = apply_highlights,
+        })
       end,
     },
     {
@@ -224,7 +252,7 @@ require("lazy").setup({
     {
       "junegunn/vim-easy-align",
       keys = {
-        { "ga", "<Plug>(EasyAlign)", mode = "n" },
+        { "ga", "<Plug>(EasyAlign)", mode = {"n","x"} },
       },
     },
     "tobyshooters/palimpsest",
