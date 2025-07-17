@@ -19,14 +19,14 @@ export PATH=$PATH:$PLAN9/bin
 
 export PG_OF_PATH=/home/cristobal/dev/of_v0.11.2
 
-export PATH="$PATH:/home/cristobal/dev/MONO-REPO/dev-scripts"
-export PATH="$PATH:/home/cristobal/.local/bin"
-export PATH="$PATH:/usr/local/go/bin"
+export PATH="$PATH:$HOME/.local/bin"
+export PATH="$PATH:$HOME/dev/MONO-REPO/dev-scripts"
 export PATH="$PATH:$HOME/go/bin"
 export PATH="$PATH:$HOME/gs-venv/bin"
-export PATH="$PATH:/usr/local/texlive/2024/bin/x86_64-linux"
 export PATH="$PATH:$HOME/ideaspace/bin"
 export PATH="$PATH:$HOME/dev/localhost"
+export PATH="$PATH:/usr/local/texlive/2024/bin/x86_64-linux"
+export PATH="$PATH:/usr/local/go/bin"
 
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
@@ -44,7 +44,7 @@ fi
 alias tree="tree -I 'node_modules'"
 alias ls="tree -L 1"
 alias vi='nvim'
-alias vim='nvim'
+alias vim='/usr/local/bin/nvim'
 alias clear='printf "\033[H\033[2J"'
 alias ack="ack -i -B 1 -A 2"
 alias emacs="emacs -nw"
@@ -94,6 +94,11 @@ function gcscp {
         gsutil cp gs://reduct-prod-storage/$1 ${2:-.}
     fi
 }
+
+export CLAUDE_CODE_USE_VERTEX=1
+export CLOUD_ML_REGION=us-east5
+export ANTHROPIC_VERTEX_PROJECT_ID=reduct-dev
+export DISABLE_PROMPT_CACHING=1
 
 # Random-ass stuff that libraries inject into here:
 

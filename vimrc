@@ -36,27 +36,33 @@ set scrolloff=10
 function! PatchColors()
     highlight LineNr ctermfg=grey
     highlight VertSplit ctermfg=250
-    highlight Folded ctermbg=255
+    highlight Folded cterm=None ctermbg=255 ctermfg=DarkBlue
+    highlight FoldColumn ctermbg=NONE ctermfg=250
     highlight NonText ctermfg=grey
     highlight Visual cterm=None ctermbg=LightYellow
     highlight StatusLine cterm=None ctermfg=235 ctermbg=252
     highlight StatusLineNC cterm=None ctermfg=254 ctermbg=252
 
-    highlight markdownH1     ctermfg=darkblue cterm=bold
-    highlight markdownH2     ctermfg=darkblue cterm=bold
-    highlight markdownH3     ctermfg=darkblue cterm=bold
-    highlight VimwikiHeader1 ctermfg=darkblue cterm=bold
-    highlight VimwikiHeader2 ctermfg=darkblue cterm=bold
-    highlight VimwikiHeader3 ctermfg=darkblue cterm=bold
+    highlight markdownH1     ctermfg=DarkBlue cterm=bold
+    highlight markdownH2     ctermfg=DarkBlue cterm=bold
+    highlight markdownH3     ctermfg=DarkBlue cterm=bold
+    highlight VimwikiHeader1 ctermfg=DarkBlue cterm=bold
+    highlight VimwikiHeader2 ctermfg=DarkBlue cterm=bold
+    highlight VimwikiHeader3 ctermfg=DarkBlue cterm=bold
 
     highlight TabLine     cterm=none ctermfg=235      ctermbg=252
-    highlight TabLineSel  cterm=bold ctermfg=darkblue ctermbg=255
-    highlight TabLineFill cterm=none ctermfg=NONE     ctermbg=NONE
+    highlight TabLineSel  cterm=bold ctermfg=DarkBlue ctermbg=255
+    highlight TabLineFill cterm=none ctermfg=none     ctermbg=none
 
-    highlight SignColumn cterm=none ctermfg=NONE ctermbg=NONE
+    highlight SignColumn cterm=none ctermfg=none ctermbg=none
 
     highlight IncSearch ctermfg=0 ctermbg=LightYellow cterm=italic
     highlight Search    ctermfg=0 ctermbg=LightYellow
+
+    highlight DiffAdd        cterm=none ctermfg=DarkGreen ctermbg=none
+    highlight DiffAddLine    cterm=none ctermfg=none      ctermbg=LightGreen
+    highlight DiffDelete     cterm=none ctermfg=DarkRed   ctermbg=none
+    highlight DiffDeleteLine cterm=none ctermfg=none      ctermbg=LightRed
 endfunction
 
 autocmd BufEnter * call PatchColors()
