@@ -145,36 +145,32 @@ require("lazy").setup({
         vim.cmd.colorscheme 'solarized'
 
         local function apply_highlights()
-          -- How to also make the vim sign column white background?
+          for name, hl in pairs(vim.api.nvim_get_hl(0, {})) do
+            if hl.bg and (hl.bg == 0xfdf6e3 or hl.bg == 0xeee8d5) then
+              vim.api.nvim_set_hl(0, name, { fg = hl.fg, bg = "#ffffff" })
+            end
+          end
+
           local highlights = {
-            'highlight Normal       guibg=#ffffff guifg=#000000',
+            'highlight Normal       guifg=#000000',
             'highlight WinSeparator guibg=#ffffff guifg=#bcbcbc',
-            'highlight VertSplit    guibg=#ffffff guifg=#bcbcbc',
+            'highlight VertSplit    guifg=#bcbcbc',
             'highlight Visual       guibg=#ffffaa guifg=none gui=bold',
-            'highlight LineNr       guibg=#ffffff guifg=#999999',
-            'highlight Folded       guibg=#ffffff guifg=#0000aa',
-            'highlight SignColumn   guibg=#ffffff',
+            'highlight LineNr       guifg=#999999',
+            'highlight Folded       guifg=#0000aa',
             'highlight NonText      guifg=#999999',
             'highlight StatusLine   guifg=#444444 guibg=#dddddd',
             'highlight StatusLineNC guifg=#aaaaaa guibg=#dddddd',
+            'highlight FloatBorder  guibg=#ffffff',
 
             'highlight! link Folded markdownH2',
-
-            'highlight NeoTreeCursorLine      guibg=#e8e8e8 guifg=#000000',
-            'highlight TelescopeBorder        guibg=#ffffff',
-            'highlight TelescopePromptBorder  guibg=#ffffff',
-            'highlight TelescopeResultsBorder guibg=#ffffff',
-            'highlight TelescopePreviewBorder guibg=#ffffff',
-            'highlight TelescopeSelection     guibg=#e8e8e8 guifg=#000000',
 
             'highlight! link NormalFloat Normal',
             'highlight! link NeoTreeNormal Normal',
             'highlight! link TelescopeNormal Normal',
 
-            'highlight DiagnosticSignError guibg=#ffffff',
-            'highlight DiagnosticSignWarn  guibg=#ffffff',
-            'highlight DiagnosticSignInfo  guibg=#ffffff',
-            'highlight DiagnosticSignHint  guibg=#ffffff',
+            'highlight NeoTreeCursorLine      guibg=#e8e8e8 guifg=#000000',
+            'highlight TelescopeSelection     guibg=#e8e8e8 guifg=#000000',
           }
           for _, hl in ipairs(highlights) do
             vim.cmd(hl)
