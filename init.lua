@@ -1,14 +1,10 @@
 -- Bootstrap plugin manager
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
-  local lazyrepo = "https://github.com/folke/lazy.nvim.git"
-  local out = vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath })
+  local repo = "https://github.com/folke/lazy.nvim.git"
+  local out = vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", repo, lazypath })
   if vim.v.shell_error ~= 0 then
-    vim.api.nvim_echo({
-      { "Failed to clone lazy.nvim:\n", "ErrorMsg" },
-      { out, "WarningMsg" },
-      { "\nPress any key to exit..." },
-    }, true, {})
+    vim.api.nvim_echo({{ "Failed to clone lazy.nvim:\n", "ErrorMsg" }}, true, {})
     vim.fn.getchar()
     os.exit(1)
   end
@@ -18,13 +14,14 @@ vim.opt.rtp:prepend(lazypath)
 -- Basic Settings
 vim.g.mapleader = ","
 vim.g.maplocalleader = "\\"
-vim.opt.showmode = false
 vim.opt.diffopt:append("foldcolumn:0")
 vim.opt.fillchars = {eob = " "}
 vim.opt.backspace = {"indent", "eol", "start"}
 vim.opt.mouse = "a"
-vim.opt.ignorecase = true vim.opt.smartcase = true
-vim.opt.number = true
+vim.opt.signcolumn = "yes"
+vim.opt.ignorecase = true 
+vim.opt.smartcase = true
+vim.opt.swapfile = false
 vim.opt.showcmd = true
 vim.opt.wildmenu = true
 vim.opt.lazyredraw = true
@@ -42,6 +39,19 @@ vim.opt.foldenable = true
 vim.opt.foldnestmax = 2
 vim.opt.foldmethod = "manual"
 vim.opt.clipboard = "unnamedplus"
+
+function _G.word_count()
+  local wc = vim.fn.wordcount()
+  local result = ""
+  if wc.visual_words then
+    result = result .. wc.visual_words .. " of "
+  end
+  result = result .. wc.words .. " words"
+  return result
+end
+
+vim.opt.statusline = " %f%m %y %= %{v:lua.word_count()} "
+
 
 function _G.custom_fold_text()
   local start_line = vim.fn.getline(vim.v.foldstart)
@@ -135,6 +145,7 @@ require("lazy").setup({
         vim.cmd.colorscheme 'solarized'
 
         local function apply_highlights()
+          -- How to also make the vim sign column white background?
           local highlights = {
             'highlight Normal       guibg=#ffffff guifg=#000000',
             'highlight WinSeparator guibg=#ffffff guifg=#bcbcbc',
@@ -142,6 +153,7 @@ require("lazy").setup({
             'highlight Visual       guibg=#ffffaa guifg=none gui=bold',
             'highlight LineNr       guibg=#ffffff guifg=#999999',
             'highlight Folded       guibg=#ffffff guifg=#0000aa',
+            'highlight SignColumn   guibg=#ffffff',
             'highlight NonText      guifg=#999999',
             'highlight StatusLine   guifg=#444444 guibg=#dddddd',
             'highlight StatusLineNC guifg=#aaaaaa guibg=#dddddd',
@@ -169,6 +181,18 @@ require("lazy").setup({
           callback = apply_highlights,
         })
       end,
+    },
+    {
+      "neovim/nvim-lspconfig",
+      config = function(_, opts)
+        local lspconfig = require('lspconfig')
+
+        lspconfig.lua_ls.setup({})
+
+        vim.keymap.set('n', 'gd', vim.lsp.buf.definition)
+        vim.keymap.set('n', 'K', vim.lsp.buf.hover)
+        vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action)
+      end
     },
     {
       "nvim-neo-tree/neo-tree.nvim",
@@ -255,7 +279,11 @@ require("lazy").setup({
         { "ga", "<Plug>(EasyAlign)", mode = {"n","x"} },
       },
     },
-    "tobyshooters/palimpsest",
+    {
+      "tobyshooters/palimpsest",
+      dev = true,
+      dir = "/home/cristobal/dev/palimpsest"
+    },
     "tpope/vim-surround",
     "tpope/vim-commentary",
     "tpope/vim-repeat",

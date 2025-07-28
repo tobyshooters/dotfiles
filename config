@@ -1,0 +1,45 @@
+general {
+    interval 		= 1
+    colors 			= true
+    color_good      = "#88b090"
+    color_degraded  = "#ccdc90"
+    color_bad       = "#e89393"
+}
+
+order += "cpu_usage 0"
+order += "cpu_temperature 0"
+order += "memory"
+order += "disk /"
+order += "battery 0"
+order += "tztime local"
+
+battery 0 {
+    format = " %status %percentage (%remaining) "
+    format_down = "No battery"
+    status_chr = "CHR"
+    status_bat = "BAT"
+    status_unk = "UNK"
+    status_full = "BAT"
+    path = "/sys/class/power_supply/BAT%d/uevent"
+    low_threshold = 10
+}
+
+memory {
+    format = " RAM %percentage_used "
+}
+
+disk "/" {
+    format = " DISK %free "
+}
+
+cpu_usage {
+    format = " CPU %usage "
+}
+
+cpu_temperature 0 {
+	format = " CPU %degrees°C "
+}
+
+tztime local {
+    format = " %A %e %B %H:%M:%S "
+}
