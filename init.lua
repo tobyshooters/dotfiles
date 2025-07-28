@@ -2,7 +2,7 @@
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
   local repo = "https://github.com/folke/lazy.nvim.git"
-  local out = vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", repo, lazypath })
+  vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", repo, lazypath })
   if vim.v.shell_error ~= 0 then
     vim.api.nvim_echo({{ "Failed to clone lazy.nvim:\n", "ErrorMsg" }}, true, {})
     vim.fn.getchar()
@@ -19,7 +19,7 @@ vim.opt.fillchars = {eob = " "}
 vim.opt.backspace = {"indent", "eol", "start"}
 vim.opt.mouse = "a"
 vim.opt.signcolumn = "yes"
-vim.opt.ignorecase = true 
+vim.opt.ignorecase = true
 vim.opt.smartcase = true
 vim.opt.swapfile = false
 vim.opt.showcmd = true
@@ -133,9 +133,9 @@ require("lazy").setup({
       'maxmx03/solarized.nvim',
       lazy = false,
       priority = 1000,
-      opts = { 
+      opts = {
         defaults = {
-          disable_devicons = true,         
+          disable_devicons = true,
         }
       },
       config = function(_, opts)
@@ -170,6 +170,11 @@ require("lazy").setup({
             'highlight! link NormalFloat Normal',
             'highlight! link NeoTreeNormal Normal',
             'highlight! link TelescopeNormal Normal',
+
+            'highlight DiagnosticSignError guibg=#ffffff',
+            'highlight DiagnosticSignWarn  guibg=#ffffff',
+            'highlight DiagnosticSignInfo  guibg=#ffffff',
+            'highlight DiagnosticSignHint  guibg=#ffffff',
           }
           for _, hl in ipairs(highlights) do
             vim.cmd(hl)
@@ -184,14 +189,48 @@ require("lazy").setup({
     },
     {
       "neovim/nvim-lspconfig",
-      config = function(_, opts)
+      config = function()
         local lspconfig = require('lspconfig')
 
-        lspconfig.lua_ls.setup({})
+        vim.diagnostic.config({
+          signs = true,
+          virtual_text = {
+            prefix = '',
+            spacing = 0,
+            format = function(diagnostic)
+              local bufnr = vim.api.nvim_get_current_buf()
+              local line_nr = diagnostic.lnum
+              local line_content = vim.api.nvim_buf_get_lines(bufnr, line_nr, line_nr + 1, false)[1] or ""
+              local padding = math.max(1, 80 - #line_content)
+              return string.rep(' ', padding) .. diagnostic.message
+            end,
+          }
+        })
 
-        vim.keymap.set('n', 'gd', vim.lsp.buf.definition)
-        vim.keymap.set('n', 'K', vim.lsp.buf.hover)
-        vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action)
+        lspconfig.lua_ls.setup({
+          cmd = { vim.fn.expand("~/dev/lua-language-server/bin/lua-language-server") },
+          settings = { Lua = { diagnostics = { globals = {'vim'} } } }
+        })
+
+        lspconfig.pyright.setup({
+          settings = {
+            python = {
+              analysis = {
+                diagnosticSeverityOverrides = {
+                  reportMissingImports = "none",
+                  reportMissingModuleSource = "none",
+                }
+              }
+            }
+          }
+        })
+
+        vim.keymap.set('n', 'gd',         vim.lsp.buf.definition)
+        vim.keymap.set('n', 'gb',         '<C-o>')
+        vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename)
+
+        vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)
+        vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
       end
     },
     {
@@ -212,7 +251,7 @@ require("lazy").setup({
     },
      {
       "nvim-telescope/telescope.nvim",
-      dependencies = { 
+      dependencies = {
         "nvim-lua/plenary.nvim",
       },
       keys = {
@@ -247,7 +286,7 @@ require("lazy").setup({
         vim.g.goyo_height = '80%'
         vim.g.limelight_conceal_ctermfg = 'gray'
         vim.g.limelight_paragraph_span = 100
-        
+
         vim.api.nvim_create_autocmd("User", {
           pattern = "GoyoEnter",
           callback = function()
@@ -255,7 +294,7 @@ require("lazy").setup({
             vim.opt.scrolloff = 999
           end,
         })
-        
+
         vim.api.nvim_create_autocmd("User", {
           pattern = "GoyoLeave",
           callback = function()
