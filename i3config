@@ -1,8 +1,7 @@
 # dmenu
 bindsym $mod+d exec --no-startup-id dmenu_run -l 10
-bindsym $mod+b exec /home/cristobal/dotfiles/list-books
 bindsym $mod+g exec /home/cristobal/dotfiles/bookmarks
-bindsym $mod+c exec /home/cristobal/dotfiles/claude-menu.py
+bindsym $mod+b exec firefox
 
 # change focus
 bindsym $mod+h focus left

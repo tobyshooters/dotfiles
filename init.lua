@@ -44,13 +44,13 @@ function _G.word_count()
   local wc = vim.fn.wordcount()
   local result = ""
   if wc.visual_words then
-    result = result .. wc.visual_words .. " of "
+    result = "selected " .. wc.visual_words .. " of "
   end
   result = result .. wc.words .. " words"
   return result
 end
 
-vim.opt.statusline = " %f%m %y %= %{v:lua.word_count()} "
+vim.opt.statusline = " %f%{&modified ? ' was modified ' : ''} %= line %l of %L, %{v:lua.word_count()} "
 
 
 function _G.custom_fold_text()
@@ -103,6 +103,39 @@ vim.api.nvim_create_autocmd({"BufRead", "BufNewFile"}, {
     vim.bo.filetype = "javascript"
   end,
 })
+
+
+-- Postscript
+local function ps_to_pdf()
+  local current_file = vim.fn.expand('%:p')
+  if not current_file or current_file == '' or not vim.fn.match(current_file, '\\.ps$') == -1 then
+    return
+  end
+
+  local pdf_file = vim.fn.substitute(current_file, '\\.ps$', '.pdf', '')
+  local cmd = string.format('gs -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -sOutputFile="%s" "%s"', pdf_file, current_file)
+  local result = vim.fn.system(cmd)
+
+  if vim.v.shell_error ~= 0 then
+    print("Error converting to PDF: " .. result)
+    return
+  end
+
+  vim.fn.system(string.format('nohup xdg-open "%s" >/dev/null 2>&1 &', pdf_file))
+  vim.b.ps_auto_convert = true
+end
+
+vim.keymap.set('n', '<leader>pp', function() ps_to_pdf() end)
+
+vim.api.nvim_create_autocmd('BufWritePost', {
+  pattern = '*.ps',
+  callback = function()
+    if vim.b.ps_auto_convert then
+      ps_to_pdf()
+    end
+  end,
+})
+
 
 -- Markdown folding configuration
 vim.g.markdown_folding = 1
@@ -206,6 +239,11 @@ require("lazy").setup({
         lspconfig.lua_ls.setup({
           cmd = { vim.fn.expand("~/dev/lua-language-server/bin/lua-language-server") },
           settings = { Lua = { diagnostics = { globals = {'vim'} } } }
+        })
+
+        lspconfig.ts_ls.setup({
+          filetypes = { "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx" },
+          root_dir = lspconfig.util.root_pattern("package.json", "tsconfig.json"),
         })
 
         lspconfig.pyright.setup({
@@ -326,5 +364,4 @@ require("lazy").setup({
     "othree/html5.vim",
   },
   install = { colorscheme = { "solarized" } },
-  checker = { enabled = true },
 })
