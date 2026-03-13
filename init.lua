@@ -89,7 +89,14 @@ vim.keymap.set("n", "<Esc>", ":noh<CR>")
 
 -- Autocommands
 vim.api.nvim_create_autocmd("FileType", {
-  pattern = {"c", "javascript", "lua"},
+  pattern = {"text", "markdown"},
+  callback = function()
+    vim.opt_local.textwidth = 78
+  end,
+})
+
+vim.api.nvim_create_autocmd({"BufRead", "BufNewFile"}, {
+  pattern = {"c", "javascript", "lua", "*.ts", "*.tsx", "*.jsx", "*.svelte", "*.html"},
   callback = function()
     vim.opt_local.tabstop = 2
     vim.opt_local.shiftwidth = 2
@@ -97,12 +104,6 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
-vim.api.nvim_create_autocmd({"BufRead", "BufNewFile"}, {
-  pattern = {"*.ts", "*.tsx", "*.jsx", "*.svelte", "*.html"},
-  callback = function()
-    vim.bo.filetype = "javascript"
-  end,
-})
 
 
 -- Postscript
@@ -188,7 +189,7 @@ require("lazy").setup({
             'highlight Normal       guifg=#000000',
             'highlight WinSeparator guibg=#ffffff guifg=#bcbcbc',
             'highlight VertSplit    guifg=#bcbcbc',
-            'highlight Visual       guibg=#ffffaa guifg=none gui=bold',
+            'highlight Visual       guibg=#bbff91 guifg=none gui=bold',
             'highlight LineNr       guifg=#999999',
             'highlight Folded       guifg=#0000aa',
             'highlight NonText      guifg=#999999',
@@ -236,10 +237,10 @@ require("lazy").setup({
           }
         })
 
-        lspconfig.lua_ls.setup({
-          cmd = { vim.fn.expand("~/dev/lua-language-server/bin/lua-language-server") },
-          settings = { Lua = { diagnostics = { globals = {'vim'} } } }
-        })
+        -- lspconfig.lua_ls.setup({
+        --   cmd = { vim.fn.expand("~/dev/lua-language-server/bin/lua-language-server") },
+        --   settings = { Lua = { diagnostics = { globals = {'vim'} } } }
+        -- })
 
         lspconfig.ts_ls.setup({
           filetypes = { "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx" },
@@ -303,7 +304,7 @@ require("lazy").setup({
       "vimwiki/vimwiki",
       init = function()
         vim.g.vimwiki_list = {{
-          path = '~/ideaspace/notes',
+          path = '/home/cristobal/ideaspace/notes',
           syntax = 'markdown',
           ext = '.md',
           auto_diary_index = 1

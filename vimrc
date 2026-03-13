@@ -267,7 +267,7 @@ nmap ga <Plug>(EasyAlign)
 " Vim Wiki
 Plugin 'vimwiki/vimwiki'
 let g:vimwiki_list = [{
-    \ 'path': '~/ideaspace/notes',
+    \ 'path': '/home/cristobal/ideaspace/notes',
     \ 'syntax': 'markdown',
     \ 'ext': '.md',
     \ 'auto_diary_index': 1

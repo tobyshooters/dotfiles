@@ -25,6 +25,7 @@ export PATH="$PATH:$HOME/go/bin"
 export PATH="$PATH:$HOME/gs-venv/bin"
 export PATH="$PATH:$HOME/ideaspace/bin"
 export PATH="$PATH:$HOME/dev/localhost"
+export PATH="$PATH:$HOME/dev/shaderc/build/glslc"
 export PATH="$PATH:/usr/local/texlive/2024/bin/x86_64-linux"
 export PATH="$PATH:/usr/local/go/bin"
 
@@ -53,15 +54,20 @@ alias cfmt="clang-format -i --style=Mozilla *.cpp *.h"
 alias scrot="scrot ~/ideaspace/inbox/screenshot"
 
 # Git
+alias ga='git add -p'
+alias gc='git commit -m'
 alias gs='git status -sb'
 alias gb='git branch --sort=-committerdate'
 alias gl='git log --all --graph --pretty=format:"%C(auto)%h %C(blue)%aN %C(magenta)%ad%C(auto)%d %Creset%s" --date=format:"%Y-%m-%d %H:%M"'
 alias gll='git log --first-parent --pretty=format:"%C(auto)%h %C(magenta)%ad%C(auto)%d %C(blue)%aN %Creset%s" --date=format:"%Y-%m-%d %H:%M"'
 
-ZSH_THEME_GIT_PROMPT_PREFIX="%F{red}⎇  "
-ZSH_THEME_GIT_PROMPT_SUFFIX="%f "
-ZSH_THEME_GIT_PROMPT_DIRTY=""
-ZSH_THEME_GIT_PROMPT_CLEAN=""
+# ZSH_THEME_GIT_PROMPT_PREFIX="%F{red}⎇  "
+# ZSH_THEME_GIT_PROMPT_SUFFIX="%f "
+# ZSH_THEME_GIT_PROMPT_DIRTY=""
+# ZSH_THEME_GIT_PROMPT_CLEAN=""
+
+PROMPT='%1~ %F{082}➜ %f '
+PROMPT='%~ %F{082}➜ %f '
 
 function cd {
     builtin cd $@
@@ -104,8 +110,8 @@ export DISABLE_PROMPT_CACHING=1
 
 # NVM 
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 nvm use 22.11.0
 
 # deno
@@ -119,14 +125,59 @@ case ":$PATH:" in
 esac
 
 # GCP
-export GOOGLE_APPLICATION_CREDENTIALS=/home/cristobal/.reduct-secrets/cristobal-dev.json
-# export GOOGLE_APPLICATION_CREDENTIALS=/home/cristobal/.config/gcloud/application_default_credentials.json
+# NB: zsh uses 1-indexed arrays. Beware!
+CREDS=(
+  "/home/cristobal/.reduct-secrets/cristobal-dev.json"
+  "/home/cristobal/.config/gcloud/application_default_credentials.json"
+)
+export GOOGLE_APPLICATION_CREDENTIALS="${CREDS[1]}"
 
-if [ -f '/home/cristobal/dev/google-cloud-sdk/path.zsh.inc' ]; then \
-    . '/home/cristobal/dev/google-cloud-sdk/path.zsh.inc'; \
+function gac() {
+  echo "Using $GOOGLE_APPLICATION_CREDENTIALS"
+  local i=0
+  for cred in "${CREDS[@]}"; do
+      echo "[$((i+1))] $cred"
+    i=$((i+1))
+  done
+  
+  echo -n "\nChoose credentials [n]: "
+  read -r choice
+  export GOOGLE_APPLICATION_CREDENTIALS="${CREDS[$choice]}"
+  echo "Using $GOOGLE_APPLICATION_CREDENTIALS"
+}
+
+function preview() {
+  if [ -z "$1" ]; then
+    echo "Usage: preview [.md or .txt]"
+    return 1
+  fi
+
+  local f=$(mktemp).md
+  printf '%s\n'                                                   \
+    '---'                                                         \
+    'documentclass: article'                                      \
+    'fontsize: 11pt'                                              \
+    'papersize: a5'                                               \
+    'header-includes: |'                                          \
+    '  \usepackage{geometry}'                                     \
+    '  \geometry{top=1.5cm, bottom=2cm, left=1.5cm, right=1.5cm}' \
+    '  \usepackage{float}'                                        \
+    '  \floatplacement{figure}{H}'                                \
+    '---' > "$f"
+  cat "$1" >> "$f"
+
+  local output="$HOME/$(basename "${1%.*}").pdf"
+  pandoc --pdf-engine=xelatex "$f" -o "$output"
+  firefox "$output"
+
+  rm "$f"
+}
+
+if [ -f '/home/cristobal/dev/deps/google-cloud-sdk/path.zsh.inc' ]; then \
+    . '/home/cristobal/dev/deps/google-cloud-sdk/path.zsh.inc'; \
 fi
 
-if [ -f '/home/cristobal/dev/google-cloud-sdk/completion.zsh.inc' ]; then \
-    . '/home/cristobal/dev/google-cloud-sdk/completion.zsh.inc'; \
+if [ -f '/home/cristobal/dev/deps/google-cloud-sdk/completion.zsh.inc' ]; then \
+    . '/home/cristobal/dev/deps/google-cloud-sdk/completion.zsh.inc'; \
 fi
 
