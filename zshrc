@@ -19,6 +19,7 @@ export PATH=$PATH:$PLAN9/bin
 
 export PG_OF_PATH=/home/cristobal/dev/of_v0.11.2
 
+export PATH="$PATH:$HOME/Applications"
 export PATH="$PATH:$HOME/.local/bin"
 export PATH="$PATH:$HOME/dev/MONO-REPO/dev-scripts"
 export PATH="$PATH:$HOME/go/bin"
@@ -36,6 +37,8 @@ export PIPENV_PYTHON="$PYENV_ROOT/shims/python"
 export FLYCTL_INSTALL="$HOME/.fly"
 export PATH="$FLYCTL_INSTALL/bin:$PATH"
 
+export XDG_DATA_DIRS="$HOME/.local/share/flatpak/exports/share:$XDG_DATA_DIRS"
+
 # Load in API key
 if [[ -f ~/dotfiles/anthropic ]]; then
   export ANTHROPIC_API_KEY=$(cat ~/dotfiles/anthropic | tr -d '\n')
@@ -51,7 +54,6 @@ alias ack="ack -i -B 1 -A 2"
 alias emacs="emacs -nw"
 alias flake8="flake8 --extend-ignore E501"
 alias cfmt="clang-format -i --style=Mozilla *.cpp *.h"
-alias scrot="scrot ~/ideaspace/inbox/screenshot"
 
 # Git
 alias ga='git add -p'
@@ -147,28 +149,69 @@ function gac() {
 }
 
 function preview() {
+  local booklet=false
+  local paper=a5
+  while [[ "$1" == --* ]]; do
+    case "$1" in
+      --booklet) booklet=true; shift ;;
+      --a5) paper=a5; shift ;;
+      --statement) paper=statement; shift ;;
+      *) echo "Unknown option: $1"; return 1 ;;
+    esac
+  done
+
   if [ -z "$1" ]; then
-    echo "Usage: preview [.md or .txt]"
+    echo "Usage: preview [--booklet] [--a5|--statement] [.md or .txt]"
     return 1
   fi
+
+  local geometry
+  case "$paper" in
+    a5) geometry='a5paper, top=1.5cm, bottom=2cm, left=1.5cm, right=1.5cm' ;;
+    statement) geometry='paperwidth=5.5in, paperheight=8.5in, top=1.5cm, bottom=2cm, left=1.5cm, right=1.5cm' ;;
+  esac
 
   local f=$(mktemp).md
   printf '%s\n'                                                   \
     '---'                                                         \
     'documentclass: article'                                      \
     'fontsize: 11pt'                                              \
-    'papersize: a5'                                               \
     'header-includes: |'                                          \
     '  \usepackage{geometry}'                                     \
-    '  \geometry{top=1.5cm, bottom=2cm, left=1.5cm, right=1.5cm}' \
+    "  \\geometry{$geometry}"                                      \
     '  \usepackage{float}'                                        \
     '  \floatplacement{figure}{H}'                                \
+    '  \newfontfamily\cjkfont{Noto Sans CJK SC}'                  \
     '---' > "$f"
   cat "$1" >> "$f"
 
   local output="$HOME/$(basename "${1%.*}").pdf"
   pandoc --pdf-engine=xelatex "$f" -o "$output"
-  firefox "$output"
+
+  if $booklet; then
+    local pages=$(pdfinfo "$output" | awk '/^Pages:/{print $2}')
+    local nsig=2
+    local sig=$(( ((pages + nsig - 1) / nsig + 3) / 4 * 4 ))
+    local tmpdir=$(mktemp -d)
+    local part=1
+    local start=1
+    while [ $start -le $pages ]; do
+      local end=$((start + sig - 1))
+      [ $end -gt $pages ] && end=$pages
+      pdfjam --booklet true --landscape --paper letterpaper "$output" "${start}-${end}" -o "$tmpdir/part${part}.pdf"
+      start=$((end + 1))
+      part=$((part + 1))
+    done
+    pdftk "$tmpdir"/part*.pdf cat output "$output"
+    rm -r "$tmpdir"
+  fi
+
+  local title="$(basename "$output")"
+  if wmctrl -l | grep -qi "$title"; then
+      wmctrl -a "$title" && xdotool key ctrl+r;
+  else
+      firefox "$output" &
+  fi
 
   rm "$f"
 }
@@ -181,3 +224,10 @@ if [ -f '/home/cristobal/dev/deps/google-cloud-sdk/completion.zsh.inc' ]; then \
     . '/home/cristobal/dev/deps/google-cloud-sdk/completion.zsh.inc'; \
 fi
 
+
+# bun completions
+[ -s "/home/cristobal/.bun/_bun" ] && source "/home/cristobal/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"

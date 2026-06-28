@@ -86,6 +86,11 @@ vim.keymap.set("n", "<leader>p", ":set paste!<CR>")
 vim.keymap.set("n", "Y", '"+y')
 vim.keymap.set("n", "<Esc>", ":noh<CR>")
 
+-- Writing
+-- Split paragraph into one sentence per line
+vim.keymap.set("v", "<leader>s", [[J:s/\([.!?]\) /\1\r\r/g<CR>'[V']gq]])
+vim.keymap.set("v", "<leader>j", [[Jgvgq]])
+
 
 -- Autocommands
 vim.api.nvim_create_autocmd("FileType", {
@@ -178,13 +183,17 @@ require("lazy").setup({
         require('solarized').setup(opts)
         vim.cmd.colorscheme 'solarized'
 
-        local function apply_highlights()
+        local themes = { 'light', 'midnight' }
+        _G.theme_index = 1
+
+        local function apply_light()
+          vim.o.background = 'light'
+          vim.cmd.colorscheme 'solarized'
           for name, hl in pairs(vim.api.nvim_get_hl(0, {})) do
             if hl.bg and (hl.bg == 0xfdf6e3 or hl.bg == 0xeee8d5) then
               vim.api.nvim_set_hl(0, name, { fg = hl.fg, bg = "#ffffff" })
             end
           end
-
           local highlights = {
             'highlight Normal       guifg=#000000',
             'highlight WinSeparator guibg=#ffffff guifg=#bcbcbc',
@@ -196,24 +205,90 @@ require("lazy").setup({
             'highlight StatusLine   guifg=#444444 guibg=#dddddd',
             'highlight StatusLineNC guifg=#aaaaaa guibg=#dddddd',
             'highlight FloatBorder  guibg=#ffffff',
-
             'highlight! link Folded markdownH2',
-
             'highlight! link NormalFloat Normal',
             'highlight! link NeoTreeNormal Normal',
             'highlight! link TelescopeNormal Normal',
-
             'highlight NeoTreeCursorLine      guibg=#e8e8e8 guifg=#000000',
             'highlight TelescopeSelection     guibg=#e8e8e8 guifg=#000000',
           }
           for _, hl in ipairs(highlights) do
             vim.cmd(hl)
           end
+          vim.opt.cursorline = false
+          io.write('\027]112;\a')
+          io.write('\027]10;#000000\a\027]11;#FFFFFF\a')
         end
+
+        local function apply_midnight()
+          vim.o.background = 'dark'
+          vim.cmd.colorscheme 'solarized'
+          for name, hl in pairs(vim.api.nvim_get_hl(0, {})) do
+            if hl.bg then
+              vim.api.nvim_set_hl(0, name, { fg = hl.fg, bg = "#0050D4" })
+            end
+          end
+          local highlights = {
+            'highlight Normal       guifg=#FFFFFF guibg=#0050D4',
+            'highlight WinSeparator guibg=#0050D4 guifg=#5588DD',
+            'highlight VertSplit    guifg=#5588DD',
+            'highlight Visual       guibg=#0070FF guifg=#FFFFFF gui=bold',
+            'highlight LineNr       guifg=#88AADD',
+            'highlight Folded       guifg=#00FFFF guibg=#0050D4',
+            'highlight NonText      guifg=#5588DD',
+            'highlight StatusLine   guifg=#00FFFF guibg=#003DA0',
+            'highlight StatusLineNC guifg=#5588DD guibg=#003DA0',
+            'highlight FloatBorder  guibg=#0050D4',
+            'highlight NormalFloat  guifg=#FFFFFF guibg=#0050D4',
+            'highlight NeoTreeNormal      guifg=#FFFFFF guibg=#0050D4',
+            'highlight TelescopeNormal    guifg=#FFFFFF guibg=#0050D4',
+            'highlight NeoTreeCursorLine  guibg=#0070FF guifg=#FFFFFF',
+            'highlight TelescopeSelection guibg=#0070FF guifg=#FFFFFF',
+            'highlight Cursor       guibg=#00FFFF guifg=#000000',
+            'highlight TermCursor   guibg=#00FFFF guifg=#000000',
+            'highlight CursorLine   guibg=#003DA0',
+            'highlight Title        guifg=#00FF88 gui=bold',
+            'highlight String       guifg=#00FFAA',
+            'highlight Constant     guifg=#FF88CC',
+            'highlight Special      guifg=#88CCFF',
+            'highlight Identifier   guifg=#66FFCC',
+            'highlight Statement    guifg=#88FF44',
+            'highlight Function     guifg=#44DDFF',
+            'highlight Type         guifg=#FFCC44',
+            'highlight Comment      guifg=#88AADD',
+            'highlight Keyword      guifg=#88FF44 gui=bold',
+            'highlight Delimiter    guifg=#AACCFF',
+            'highlight Underlined   guifg=#44DDFF gui=underline',
+            'highlight! link @markup.link.url Underlined',
+            'highlight! link @markup.link Underlined',
+            'highlight! link @markup.link.label Function',
+          }
+          for _, hl in ipairs(highlights) do
+            vim.cmd(hl)
+          end
+          vim.opt.cursorline = true
+          io.write('\027]12;#00FFFF\a')
+          io.write('\027]10;#FFFFFF\a\027]11;#0050D4\a')
+        end
+
+        local apply = { light = apply_light, midnight = apply_midnight }
+
+        function _G.apply_theme()
+          apply[themes[_G.theme_index]]()
+        end
+
+        vim.keymap.set('n', '<leader>bg', function()
+          _G.theme_index = (_G.theme_index % #themes) + 1
+          _G.apply_theme()
+        end)
+
+        vim.api.nvim_create_autocmd('VimLeavePre', {
+          callback = function() io.write('\027]110;\a\027]111;\a') end,
+        })
 
         vim.api.nvim_create_autocmd({'VimEnter', 'ColorScheme'}, {
           pattern = '*',
-          callback = apply_highlights,
+          callback = _G.apply_theme,
         })
       end,
     },
@@ -335,6 +410,7 @@ require("lazy").setup({
           callback = function()
             vim.cmd("Limelight!")
             vim.opt.scrolloff = 10
+            vim.defer_fn(_G.apply_theme, 50)
           end,
         })
       end,
