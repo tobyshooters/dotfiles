@@ -1,0 +1,79 @@
+#!/usr/bin/env zsh
+#
+# Render a markdown/txt file to a PDF (placed next to the input) and open it.
+#
+# Dependencies:
+#   pandoc                          - markdown -> PDF conversion
+#   xelatex (texlive-xetex)         - PDF engine
+#   Noto Sans CJK SC font           - CJK glyphs
+#   poppler-utils (pdfinfo)         - page count (booklet mode)
+#   pdfjam (texlive-extra-utils)    - booklet imposition (--booklet)
+#   pdftk                           - merge booklet signatures (--booklet)
+#   wmctrl, xdotool                 - focus/reload existing viewer window
+#   firefox                         - PDF viewer
+
+booklet=false
+paper=a5
+while [[ "$1" == --* ]]; do
+  case "$1" in
+    --booklet) booklet=true; shift ;;
+    --a5) paper=a5; shift ;;
+    --statement) paper=statement; shift ;;
+    *) echo "Unknown option: $1"; exit 1 ;;
+  esac
+done
+
+if [ -z "$1" ]; then
+  echo "Usage: preview [--booklet] [--a5|--statement] [.md or .txt]"
+  exit 1
+fi
+
+case "$paper" in
+  a5) geometry='a5paper, top=1.5cm, bottom=2cm, left=1.5cm, right=1.5cm' ;;
+  statement) geometry='paperwidth=5.5in, paperheight=8.5in, top=1.5cm, bottom=2cm, left=1.5cm, right=1.5cm' ;;
+esac
+
+f=$(mktemp).md
+printf '%s\n'                                                   \
+  '---'                                                         \
+  'documentclass: article'                                      \
+  'fontsize: 11pt'                                              \
+  'header-includes: |'                                          \
+  '  \usepackage{geometry}'                                     \
+  "  \\geometry{$geometry}"                                      \
+  '  \usepackage{float}'                                        \
+  '  \usepackage{tocloft}'                                        \
+  '  \floatplacement{figure}{H}'                                \
+  '  \newfontfamily\cjkfont{Noto Sans CJK SC}'                  \
+  '---' > "$f"
+cat "$1" >> "$f"
+
+output="${1%.*}.pdf"
+pandoc --pdf-engine=xelatex "$f" -o "$output"
+
+if $booklet; then
+  pages=$(pdfinfo "$output" | awk '/^Pages:/{print $2}')
+  nsig=2
+  sig=$(( ((pages + nsig - 1) / nsig + 3) / 4 * 4 ))
+  tmpdir=$(mktemp -d)
+  part=1
+  start=1
+  while [ $start -le $pages ]; do
+    end=$((start + sig - 1))
+    [ $end -gt $pages ] && end=$pages
+    pdfjam --booklet true --landscape --paper letterpaper "$output" "${start}-${end}" -o "$tmpdir/part${part}.pdf"
+    start=$((end + 1))
+    part=$((part + 1))
+  done
+  pdftk "$tmpdir"/part*.pdf cat output "$output"
+  rm -r "$tmpdir"
+fi
+
+title="$(basename "$output")"
+if wmctrl -l | grep -qi "$title"; then
+    wmctrl -a "$title" && xdotool key ctrl+r;
+else
+    firefox "$output" &
+fi
+
+rm "$f"

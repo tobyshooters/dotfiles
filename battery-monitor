@@ -1,0 +1,27 @@
+#!/bin/bash
+
+WARN_LEVEL=10
+SLEEP_LEVEL=5
+warned=0
+
+while true; do
+    capacity=$(cat /sys/class/power_supply/BAT0/capacity)
+    status=$(cat /sys/class/power_supply/BAT0/status)
+
+    if [ "$status" != "Charging" ] && [ "$status" != "Full" ]; then
+        if [ "$capacity" -le "$SLEEP_LEVEL" ]; then
+            notify-send -u critical "Battery Critical" "Battery at ${capacity}%. Suspending now."
+            sleep 2
+            i3lock && systemctl suspend
+        elif [ "$capacity" -le "$WARN_LEVEL" ] && [ "$warned" -eq 0 ]; then
+            notify-send -u critical "Battery Low" "Battery at ${capacity}%."
+            warned=1
+        fi
+    fi
+
+    if [ "$capacity" -gt "$WARN_LEVEL" ]; then
+        warned=0
+    fi
+
+    sleep $((capacity * 6))
+done

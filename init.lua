@@ -88,7 +88,7 @@ vim.keymap.set("n", "<Esc>", ":noh<CR>")
 
 -- Writing
 -- Split paragraph into one sentence per line
-vim.keymap.set("v", "<leader>s", [[J:s/\([.!?]\) /\1\r\r/g<CR>'[V']gq]])
+vim.keymap.set("v", "<leader>s", [[J:s/\([.!?]"\=\)\( \=\[.\{-}\]\)\= \([A-Z]\)/\1\2\r\r\3/g<CR>'[V']gq]])
 vim.keymap.set("v", "<leader>j", [[Jgvgq]])
 
 
@@ -97,6 +97,7 @@ vim.api.nvim_create_autocmd("FileType", {
   pattern = {"text", "markdown"},
   callback = function()
     vim.opt_local.textwidth = 78
+    vim.cmd("syntax sync minlines=200")
   end,
 })
 
@@ -244,8 +245,8 @@ require("lazy").setup({
             'highlight TelescopeNormal    guifg=#FFFFFF guibg=#0050D4',
             'highlight NeoTreeCursorLine  guibg=#0070FF guifg=#FFFFFF',
             'highlight TelescopeSelection guibg=#0070FF guifg=#FFFFFF',
-            'highlight Cursor       guibg=#00FFFF guifg=#000000',
-            'highlight TermCursor   guibg=#00FFFF guifg=#000000',
+            'highlight Cursor       guibg=#00FF88 guifg=#000000',
+            'highlight TermCursor   guibg=#00FF88 guifg=#000000',
             'highlight CursorLine   guibg=#003DA0',
             'highlight Title        guifg=#00FF88 gui=bold',
             'highlight String       guifg=#00FFAA',
@@ -267,7 +268,7 @@ require("lazy").setup({
             vim.cmd(hl)
           end
           vim.opt.cursorline = true
-          io.write('\027]12;#00FFFF\a')
+          io.write('\027]12;#00FF88\a')
           io.write('\027]10;#FFFFFF\a\027]11;#0050D4\a')
         end
 
@@ -433,6 +434,14 @@ require("lazy").setup({
       "tobyshooters/palimpsest",
       dev = true,
       dir = "/home/cristobal/dev/palimpsest"
+    },
+    {
+      "nvim-treesitter/nvim-treesitter",
+      build = ":TSUpdate",
+      opts = {
+        ensure_installed = { "markdown", "markdown_inline", "lua", "javascript", "typescript", "python", "html" },
+        highlight = { enable = true },
+      },
     },
     "tpope/vim-surround",
     "tpope/vim-commentary",
