@@ -380,7 +380,7 @@ require("lazy").setup({
       "vimwiki/vimwiki",
       init = function()
         vim.g.vimwiki_list = {{
-          path = '/home/cristobal/ideaspace/notes',
+          path = '/home/cristobal/ideaspace/aguafuerte',
           syntax = 'markdown',
           ext = '.md',
           auto_diary_index = 1
