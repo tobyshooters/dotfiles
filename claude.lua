@@ -1,3 +1,5 @@
+-- This sketch became the plugin `palimpsest.nvim`
+
 local M = {}
 
 M.config = {
