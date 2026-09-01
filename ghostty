@@ -7,7 +7,4 @@ window-padding-y = 6, 0
 
 gtk-titlebar = false
 
-# Scroll: touchpad (precision) feels floaty/imprecise at the default 1.0.
-# Lower it so a given swipe moves fewer lines = finer, more deliberate control.
-# Bump precision back up if it's now too slow; discrete=3 is the wheel default.
-mouse-scroll-multiplier = precision:0.8,discrete:3
+mouse-scroll-multiplier = precision:2.0,discrete:3
