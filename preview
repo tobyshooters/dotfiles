@@ -46,7 +46,23 @@ printf '%s\n'                                                   \
   '  \floatplacement{figure}{H}'                                \
   '  \newfontfamily\cjkfont{Noto Sans CJK SC}'                  \
   '---' > "$f"
-cat "$1" >> "$f"
+# Expand `!include foo.md` directives (resolved relative to the master file's
+# directory) so a compilation file can transclude its parts. Non-include lines
+# pass through unchanged. Includes are not recursive.
+srcdir=$(dirname "$1")
+awk -v dir="$srcdir" '
+  /^[[:space:]]*!include[[:space:]]+/ {
+    line = $0
+    sub(/^[[:space:]]*!include[[:space:]]+/, "", line)
+    sub(/[[:space:]]+$/, "", line)
+    path = (line ~ /^\//) ? line : dir "/" line
+    while ((getline part < path) > 0) print part
+    close(path)
+    print ""
+    next
+  }
+  { print }
+' "$1" >> "$f"
 
 output="${1%.*}.pdf"
 pandoc --pdf-engine=xelatex "$f" -o "$output"

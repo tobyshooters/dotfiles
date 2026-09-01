@@ -380,7 +380,7 @@ require("lazy").setup({
       "vimwiki/vimwiki",
       init = function()
         vim.g.vimwiki_list = {{
-          path = '/home/cristobal/ideaspace/aguafuerte',
+          path = '/home/cristobal/Documents/aguafuerte',
           syntax = 'markdown',
           ext = '.md',
           auto_diary_index = 1
@@ -441,6 +441,38 @@ require("lazy").setup({
       opts = {
         ensure_installed = { "markdown", "markdown_inline", "lua", "javascript", "typescript", "python", "html" },
         highlight = { enable = true },
+      },
+    },
+    {
+        "https://github.com/3rd/image.nvim",
+        build = false,
+        opts = {
+            backend = "kitty",
+            processor = "magick_cli",
+            max_width = 80,
+            integrations = {
+                markdown = {
+                    enabled = true,
+                    clear_in_insert_mode = false,
+                },
+            },
+        }
+    },
+    {
+      "HakonHarnes/img-clip.nvim",
+      opts = {
+        default = {
+          -- Save the image in an "images" folder next to the file being edited
+          dir_path = "images",
+          relative_to_current_file = true,
+          -- Markdown embed
+          template = "![$CURSOR]($FILE_PATH)",
+          prompt_for_file_name = false,
+          file_name = "%Y-%m-%d-%H-%M-%S",
+        },
+      },
+      keys = {
+        { "<leader>i", "<cmd>PasteImage<cr>", desc = "Paste image from clipboard" },
       },
     },
     "tpope/vim-surround",

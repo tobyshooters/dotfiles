@@ -46,7 +46,7 @@ fi
 
 # General
 alias tree="tree -I 'node_modules'"
-alias ls="tree -L 1"
+alias ls="tree -L 1 --dirsfirst -a"
 alias vi='nvim'
 alias vim='/usr/local/bin/nvim'
 alias clear='printf "\033[H\033[2J"'
@@ -110,11 +110,18 @@ export DISABLE_PROMPT_CACHING=1
 
 # Random-ass stuff that libraries inject into here:
 
-# NVM 
+# NVM (lazy loaded
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
-nvm use 22.11.0
+_load_nvm() {
+  unset -f nvm node npm npx 2>/dev/null
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+  nvm use 22.11.0 &> /dev/null
+}
+nvm()  { _load_nvm; nvm "$@"; }
+node() { _load_nvm; node "$@"; }
+npm()  { _load_nvm; npm "$@"; }
+npx()  { _load_nvm; npx "$@"; }
 
 # deno
 . "/home/cristobal/.deno/env"

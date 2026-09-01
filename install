@@ -5,6 +5,10 @@ sudo apt install vim git zsh tree ack
 chsh -s $(which zsh)
 ln -s ~/dotfiles/zshrc .zshrc
 
+# Ghostty terminal config
+mkdir -p ~/.config/ghostty
+ln -s ~/dotfiles/ghostty ~/.config/ghostty/config.ghostty
+
 # Vim plugins
 ln -s ~/dotfiles/vimrc .vimrc
 git clone https://github.com/VundleVim/Vundle.vim.git ~/dotfiles/bundle/Vundle.vim
