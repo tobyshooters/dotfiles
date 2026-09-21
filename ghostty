@@ -7,4 +7,12 @@ window-padding-y = 6, 0
 
 gtk-titlebar = false
 
+# Launching from an i3 keybind (not a .desktop file) makes `detect` resolve to
+# false, so every alt+Enter forked a whole new process: snap load, GTK init,
+# fontconfig scan. Forcing single-instance makes new windows a message to the
+# already-running process instead. Keeping the process alive with no windows
+# open is what stops the *next* alt+Enter from paying that cost again.
+gtk-single-instance = true
+quit-after-last-window-closed = false
+
 mouse-scroll-multiplier = precision:2.0,discrete:3

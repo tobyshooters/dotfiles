@@ -77,7 +77,7 @@ vim.keymap.set("n", "<C-J>", "<C-W><C-J>")
 vim.keymap.set("n", "<C-K>", "<C-W><C-K>")
 vim.keymap.set("n", "<C-L>", "<C-W><C-L>")
 vim.keymap.set("n", "<C-H>", "<C-W><C-H>")
-vim.keymap.set("n", "<leader>t", ":tabnew<CR>")
+vim.keymap.set("n", "<leader>T", ":tabnew<CR>")
 vim.keymap.set("n", "<C-t>", ":tabnext<CR>")
 vim.keymap.set("n", "<C-S-t>", ":tabprevious<CR>")
 vim.keymap.set("v", "<Space>", "zf")
@@ -165,6 +165,109 @@ vim.api.nvim_create_autocmd("BufEnter", {
     vim.opt_local.foldexpr = "v:lua.markdown_level()"
   end,
 })
+
+-- Vimwiki tags, which live on their own line, as :one: :two:
+local wiki = '/home/cristobal/Documents/aguafuerte'
+local wiki_index = wiki .. '/index.md'
+
+local function buf_tags(buf)
+  local tags = {}
+  for _, line in ipairs(vim.api.nvim_buf_get_lines(buf, 0, -1, false)) do
+    if line:match('^:%S.*:$') then
+      for tag in line:gmatch('[^:%s]+') do
+        table.insert(tags, tag)
+      end
+    end
+  end
+  table.sort(tags)
+  return table.concat(tags, ' ')
+end
+
+local function insert_tag(tag)
+  -- A tag holds no whitespace or colons, so a freshly typed one gets dashed
+  tag = vim.trim(tag):lower():gsub('[%s:]+', '-')
+  if tag == '' then
+    return
+  end
+
+  local line = vim.api.nvim_get_current_line()
+  local row = vim.api.nvim_win_get_cursor(0)[1]
+
+  if line:match('^:%S.*:$') then
+    vim.api.nvim_set_current_line(line .. ' :' .. tag .. ':')
+  elseif line:match('^%s*$') then
+    vim.api.nvim_set_current_line(':' .. tag .. ':')
+  else
+    vim.api.nvim_buf_set_lines(0, row, row, false, {':' .. tag .. ':'})
+    vim.api.nvim_win_set_cursor(0, {row + 1, 0})
+  end
+end
+
+local function tag_picker()
+  local actions = require('telescope.actions')
+  local state = require('telescope.actions.state')
+
+  local tags = vim.fn['vimwiki#tags#get_tags']()
+  table.sort(tags)
+
+  require('telescope.pickers').new({}, {
+    prompt_title = 'Wiki tags',
+    finder = require('telescope.finders').new_table(tags),
+    sorter = require('telescope.config').values.generic_sorter({}),
+    attach_mappings = function(bufnr, map)
+      actions.select_default:replace(function()
+        local entry = state.get_selected_entry()
+        local prompt = state.get_current_line()
+        actions.close(bufnr)
+        insert_tag(entry and entry[1] or prompt)
+      end)
+
+      -- Take the prompt as written, for a tag that doesn't exist yet
+      map({'i', 'n'}, '<C-a>', function()
+        local prompt = state.get_current_line()
+        actions.close(bufnr)
+        insert_tag(prompt)
+      end)
+
+      return true
+    end,
+  }):find()
+end
+
+local function regen_tags()
+  local buf = vim.fn.bufadd(wiki_index)
+  vim.fn.bufload(buf)
+  vim.api.nvim_buf_call(buf, function()
+    vim.cmd('VimwikiRebuildTags')
+    vim.cmd('VimwikiGenerateTagLinks')
+    vim.cmd('silent write')
+  end)
+end
+
+vim.keymap.set('n', '<leader>tt', tag_picker)
+vim.keymap.set('n', '<leader>tr', regen_tags)
+
+-- Regenerate the index whenever a write changes a page's tags
+vim.api.nvim_create_autocmd('BufReadPost', {
+  pattern = wiki .. '/*.md',
+  callback = function(a) vim.b[a.buf].tags_indexed = buf_tags(a.buf) end,
+})
+
+vim.api.nvim_create_autocmd('BufWritePost', {
+  pattern = wiki .. '/*.md',
+  -- Nested, so loading index.md below sets its filetype and wiki commands
+  nested = true,
+  callback = function(a)
+    local tags = buf_tags(a.buf)
+    if a.file == wiki_index or tags == (vim.b[a.buf].tags_indexed or '') then
+      return
+    end
+
+    vim.b[a.buf].tags_indexed = tags
+    regen_tags()
+  end,
+})
+
 
 -- Load all plugins
 require("lazy").setup({
@@ -380,7 +483,7 @@ require("lazy").setup({
       "vimwiki/vimwiki",
       init = function()
         vim.g.vimwiki_list = {{
-          path = '/home/cristobal/Documents/aguafuerte',
+          path = wiki,
           syntax = 'markdown',
           ext = '.md',
           auto_diary_index = 1

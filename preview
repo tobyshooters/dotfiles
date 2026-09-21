@@ -29,7 +29,7 @@ if [ -z "$1" ]; then
 fi
 
 case "$paper" in
-  a5) geometry='a5paper, top=1.5cm, bottom=2cm, left=1.5cm, right=1.5cm' ;;
+  a5) geometry='a5paper, top=1.5cm, bottom=2cm, left=2cm, right=2cm' ;;
   statement) geometry='paperwidth=5.5in, paperheight=8.5in, top=1.5cm, bottom=2cm, left=1.5cm, right=1.5cm' ;;
 esac
 
@@ -45,6 +45,10 @@ printf '%s\n'                                                   \
   '  \usepackage{tocloft}'                                        \
   '  \floatplacement{figure}{H}'                                \
   '  \newfontfamily\cjkfont{Noto Sans CJK SC}'                  \
+  '  \usepackage{newunicodechar}'                               \
+  '  \newfontfamily\symbolfont{FreeSerif}'                      \
+  '  \newunicodechar{♥}{{\symbolfont ♥}}'                       \
+  '  \newunicodechar{ˈ}{{\symbolfont ˈ}}'                       \
   '---' > "$f"
 # Expand `!include foo.md` directives (resolved relative to the master file's
 # directory) so a compilation file can transclude its parts. Non-include lines

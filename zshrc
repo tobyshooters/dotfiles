@@ -110,18 +110,19 @@ export DISABLE_PROMPT_CACHING=1
 
 # Random-ass stuff that libraries inject into here:
 
-# NVM (lazy loaded
+# NVM. Sourcing nvm.sh costs ~300ms, but it is only needed to *switch* versions
+# -- running node does not need it. So put the default toolchain on PATH
+# directly (free) and keep nvm itself lazy. This also fixes yarn/npx/claude,
+# which live in the same bin dir and were unreachable until nvm happened to load.
 export NVM_DIR="$HOME/.nvm"
-_load_nvm() {
-  unset -f nvm node npm npx 2>/dev/null
+export PATH="$NVM_DIR/versions/node/v22.11.0/bin:$PATH"
+
+nvm() {
+  unset -f nvm
   [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
   [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
-  nvm use 22.11.0 &> /dev/null
+  nvm "$@"
 }
-nvm()  { _load_nvm; nvm "$@"; }
-node() { _load_nvm; node "$@"; }
-npm()  { _load_nvm; npm "$@"; }
-npx()  { _load_nvm; npx "$@"; }
 
 # deno
 . "/home/cristobal/.deno/env"
